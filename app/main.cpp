@@ -1,7 +1,7 @@
 #include "main.h"
-#include "memory.h"
 
 int main()
 {
-    memory_example();
+    // memory_example();
+    vector_example();
 }

@@ -1,6 +1,6 @@
 add_library(cpp-memory
   STATIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/source/memory.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/cmemory.cpp
 )
 
 target_include_directories(cpp-memory PRIVATE include)
