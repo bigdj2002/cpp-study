@@ -114,7 +114,7 @@ int vector_example()
 
   std::vector<Cat2> cats3;  
   cats3.emplace_back("Kitty3");
-  cats3.emplace_back("Nabi3"); // will happen mem copy (not mem move) -> unefficient.. it is reason to declare "noexcept" keyword
+  cats3.emplace_back("Nabi3"); // will happen mem copy (not mem`ove) -> unefficient.. it is reason to declare "noexcept" keyword
 
   std::vector<Cat2> cats4;
   cats4.reserve(2); // MORE CLEAN!
