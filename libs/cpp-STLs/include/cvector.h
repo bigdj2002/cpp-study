@@ -4,13 +4,13 @@
 
 int vector_example();
 
-class Cat
+class Cat1
 {
 public:
-  explicit Cat(int age) : mAge{age} {}
-  explicit Cat(std::string name) : mName{std::move(name)} {}
-  explicit Cat(std::string name, int age) : mName{std::move(name)}, mAge{age} {}
-  ~Cat() {}
+  explicit Cat1(int age) : mAge{age} {}
+  explicit Cat1(std::string name) : mName{std::move(name)} {}
+  explicit Cat1(std::string name, int age) : mName{std::move(name)}, mAge{age} {}
+  ~Cat1() {}
 
   void speak1() const
   {

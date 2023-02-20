@@ -47,12 +47,12 @@ int vector_example()
 
   /* ----------------------------------------------------- */
 
-  std::vector<Cat> cats1;
-  cats1.emplace_back(Cat(1));
-  cats1.emplace_back(Cat(2));
-  cats1.emplace_back(Cat(3));
-  cats1.emplace_back(Cat(4));
-  cats1.emplace_back(Cat(5));
+  std::vector<Cat1> cats1;
+  cats1.emplace_back(Cat1(1));
+  cats1.emplace_back(Cat1(2));
+  cats1.emplace_back(Cat1(3));
+  cats1.emplace_back(Cat1(4));
+  cats1.emplace_back(Cat1(5));
 
   for (const auto &cat : cats1)
   {
@@ -72,10 +72,10 @@ int vector_example()
 
   /* ----------------------------------------------------- */
 
-  std::vector<Cat> cats2;
-  cats2.emplace_back(Cat{"cat0", 0});
-  cats2.emplace_back(Cat{"cat1", 0});
-  cats2.emplace_back(Cat{"kitty", 2});
+  std::vector<Cat1> cats2;
+  cats2.emplace_back(Cat1{"cat0", 0});
+  cats2.emplace_back(Cat1{"cat1", 0});
+  cats2.emplace_back(Cat1{"kitty", 2});
   cats2.emplace_back("kitty", 3); // Will not be generated temp memory to move
   for (const auto &cat : cats2)
   {
@@ -84,7 +84,7 @@ int vector_example()
   std::cout << std::endl
             << std::endl;
 
-  Cat nabi{"nabi", 3};
+  Cat1 nabi{"nabi", 3};
   cats2.emplace_back(nabi);            // L-Value : copy
   cats2.emplace_back(std::move(nabi)); // R-Value : move
 
