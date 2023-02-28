@@ -3,9 +3,10 @@ file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
 )
 
 add_executable(program ${SRC_FILES})
-target_link_libraries(program PUBLIC cpp-memory cpp-STLs)
+target_link_libraries(program PUBLIC cpp-memory cpp-STLs c-cpp-preprocessor)
 target_include_directories(program 
   PUBLIC 
     ${CMAKE_SOURCE_DIR}/libs/cpp-memory/include
     ${CMAKE_SOURCE_DIR}/libs/cpp-STLs/include
+    ${CMAKE_SOURCE_DIR}/libs/c-cpp-preprocessor/include
 )
