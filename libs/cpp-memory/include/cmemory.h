@@ -19,7 +19,9 @@ struct st2
   long a;  // 8 bytes
   int b;   // 4 bytes
   short c; // 2 bytes
-}; // 16 bytes in total
+}; // 16 bytes in total 
+/** \note: byte = (aaaaaaaa bbbbccpppp) → pppp(4bytes) is padded
+ */
 
 struct st3
 {
@@ -30,8 +32,8 @@ struct st3
 }; // 24 bytess in total
 
 /** 
- * \warning: Could be happen 1)race condition or 2)false sharing
- * \note: Since c++ 11, alignas specifier to solve above problems
+ * \warning: Could be happen 1)race condition or 2)false sharing in memory
+ * \note: Since c++ 11, alignas specifier is to solve above problems
  */
 struct alignas(32) st4
 {
