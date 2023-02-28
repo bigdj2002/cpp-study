@@ -19,12 +19,8 @@ struct st2
   long a;  // 8 bytes
   int b;   // 4 bytes
   short c; // 2 bytes
-}; // 16 bytes in total (메모리가 가장 큰 자료형 변수의 바이트 배수)
+}; // 16 bytes in total
 
-/** 
- * \warning: Could be happen race condition or false sharing
- * \note: Since c++ 11, alignas specifier
- */
 struct st3
 {
   double d8;
@@ -33,6 +29,10 @@ struct st3
   char c1;
 }; // 24 bytess in total
 
+/** 
+ * \warning: Could be happen 1)race condition or 2)false sharing
+ * \note: Since c++ 11, alignas specifier to solve above problems
+ */
 struct alignas(32) st4
 {
   double d8;

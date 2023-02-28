@@ -2,6 +2,6 @@
 
 int main()
 {
-    // memory_example();
-    vector_example();
+    memory_example();
+    // vector_example();
 }
