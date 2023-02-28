@@ -55,5 +55,10 @@ int memory_example()
   std::cout << sizeof(catptr) << std::endl;
   std::cout << std::endl;
 
+  /* ----------------------------------------------------- */
+
+  std::cout << sizeof(st3);
+  std::cout << sizeof(st4);
+
   return 0;
 }
