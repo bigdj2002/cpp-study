@@ -14,15 +14,15 @@ struct st1
   int b; // 4 bytes
 }; // 8 bytes in total
 
+/** \note: st2 structure memory = (aaaaaaaa bbbbccpppp) → pppp(4bytes) is padded */
 struct st2
 {
   long a;  // 8 bytes
   int b;   // 4 bytes
   short c; // 2 bytes
 }; // 16 bytes in total 
-/** \note: byte = (aaaaaaaa bbbbccpppp) → pppp(4bytes) is padded
- */
 
+/** \note: st3 structure memory = (dddddddd aaaabbbb bppppppp) → ppppppp(7bytes) is padded */
 struct st3
 {
   double d8;
@@ -41,7 +41,7 @@ struct alignas(32) st4
   int i4a;
   int i4b;
   char c1;
-}; // 24 bytess in total
+}; // 32 bytess in total
 
 class cat
 {
