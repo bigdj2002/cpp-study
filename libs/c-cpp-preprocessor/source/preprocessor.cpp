@@ -12,8 +12,8 @@ static void predefined_macros()
   // printf("%d\n", __STDC_NO_THREADS__ );
   // printf("%d\n", __STDC_NO_VLA__  );
   // printf("%d\n", __STDC_VERSION__  );
-  printf("%d\n", __STDCPP_DEFAULT_NEW_ALIGNMENT__);
-  printf("%d\n", __STDCPP_THREADS__);
+  // printf("%d\n", __STDCPP_DEFAULT_NEW_ALIGNMENT__);
+  // printf("%d\n", __STDCPP_THREADS__);
   printf("%s\n", __TIME__);
 }
 
