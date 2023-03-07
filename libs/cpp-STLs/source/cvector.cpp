@@ -132,5 +132,95 @@ int vector_example()
   cats4.emplace_back("Kitty4");
   cats4.emplace_back("Nabi4");
 
+
+
+
+
+  /**
+   * \brief: std::vector - intermediate level (On for loop)
+   */
+
+  /** \example: #1 */
+  std::size_t n = 10000;
+  std::size_t l = 1000;
+  std::vector<int> numsa(n, 1);
+  std::vector<int> numsb(n, 1);
+  std::vector<int> numsc(n, 1);
+
+  // Index-based
+  auto start1 = std::chrono::high_resolution_clock::now();
+  for (size_t i = 0; i < l; i++)
+  {
+    for (std::size_t idx = 0; idx < numsa.size(); idx++)
+    {
+      numsa[idx] *= 2;
+    }
+  }
+  auto end1 = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> time1 = end1 - start1;
+  std::cout << "Index-based loop: " << time1.count() << std::endl;
+
+  // Iterator-based
+  auto start2 = std::chrono::high_resolution_clock::now();
+  for (size_t i = 0; i < l; i++)
+  {
+    for (auto itr = numsb.begin(); itr != numsb.end(); itr++)
+    {
+      *itr *= 2;
+    }
+  }
+  auto end2 = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> time2 = end2 - start2;
+    std::cout << "Iterator-based loop: " << time2.count() << std::endl;
+
+  // Range-based (Safe and stable method)
+  auto start3 = std::chrono::high_resolution_clock::now();
+  for (size_t i = 0; i < l; i++)
+  {
+    for (auto &num : numsc)
+    {
+      num *= 2;
+    }
+  }
+  auto end3 = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> time3 = end3 - start3;
+  std::cout << "Range-based loop: " << time3.count() << std::endl;
+  std::cout << std::endl;
+
+  /** \example: #2 - In case of coding in index-based loop  */
+  std::vector<int> nums11{0, 1, 0, 1};
+  std::vector<int> nums22{0, 1, 0, 1};
+  std::vector<int> nums33{0, 1, 0, 1};
+
+  for (size_t i = 0; i < nums11.size(); i++)
+  {
+    if (nums11[i] == 0)
+      nums11.emplace_back(2); // If size of vector is changes, index-based loop must use!
+  }
+
+  for (auto itr = nums22.begin(); itr != nums22.end(); itr++)
+  {
+    if (*itr == 0)
+      nums22.emplace_back(2); // Possible to copy & move whole vectors another address in memory due to push process! Therefore, itr points meaningless pos in memory
+  }
+
+  for (auto &num : nums33)
+  {
+    if (num == 0)
+      nums33.emplace_back(2); // Possible to change capacity. 
+  }
+
+  for (const int n : nums11)
+    std::cout << n << " ";
+  std::cout << std::endl;
+
+  for (const int n : nums22)
+    std::cout << n << " ";
+  std::cout << std::endl;
+
+  for (const int n : nums33)
+    std::cout << n << " ";
+  std::cout << std::endl;
+
   return 0;
 }
