@@ -220,7 +220,81 @@ int vector_example()
 
   for (const int n : nums33)
     std::cout << n << " ";
+  std::cout << std::endl << std::endl;
+
+
+
+
+
+  /**
+   * \brief: std::vector - intermediate level (On erase VS remove)
+   * \details: std::remove, std::remove_if
+   * Removes all elements satisfying specific criteria from the range [first, last) and returns a past-the-end iterator for the new end of the range.
+   * Removing is done by shifting (by means of copy assignment (until C++11) move assignment (since C++11)) the elements in the range in such a way that the elements that are not to be removed appear in the beginning of the range. 
+   */
+
+  std::vector<int> nums111 = {0, 1, 0, 1, 0, 1, 0};
+  std::vector<int> nums222 = {0, 1, 0, 1, 0, 1, 0};
+  std::vector<int> nums333 = {0, 1, 2, 3, 4, 5, 6};
+  std::vector<Cat1> cats111;
+
+  /** \example: #1 */
+  nums111.erase(std::remove(nums111.begin(), nums111.end(), 0), nums111.end());
+  for (const int n : nums111)
+    std::cout << n << " ";
   std::cout << std::endl;
+
+  /** \example: #2-1 */
+  /** \details: std::remove process
+   *             ↓(begin)                    ↓(end)
+   * step 1. [   0   1   0   1   0   1   0   ]
+
+   *             ↓   ↓                       ↓(end)
+   * step 2. [   0   1   0   1   0   1   0   ] : Compare [0] VS [1]
+
+   *             ↓   ↓                       ↓(end)
+   * step 3. [   1   1   0   1   0   1   0   ] : Delete [0] and Move and Copy from [1] to [0]
+
+   *                 ↓   ↓                   ↓(end)
+   * step 4. [   1   1   0   1   0   1   0   ] : pointers are moved next
+
+   *                 ↓       ↓               ↓(end)
+   * step 5. [   1   1   0   1   0   1   0   ] : pointer move
+
+   *                     ↓       ↓           ↓(end)
+   * step 6. [   1   1   0   1   0   1   0   ] : 2nd pointer points [4] (value 0) So, move next
+
+   *                     ↓                   ↓(end)
+   * step 7. [   1   1   1   1   0   1   0   ] : Delete [5] and Move and Copy from [5] to [3]
+   */
+  auto itr = std::remove(nums222.begin(), nums222.end(), 0); // *** Very important ***
+  for (const int n : nums222)
+    std::cout << n << " ";
+  std::cout << std::endl;
+
+  /** \example: #2-2 */
+  nums222.erase(itr, nums222.end());
+  for (const int n : nums222)
+    std::cout << n << " ";
+  std::cout << std::endl;
+
+  /** \example: #3 */
+  nums333.erase(std::remove_if(nums333.begin(), nums333.end(), 
+  [](int n){ if(n % 2 == 0) {return true;} return false; } // lamda function (can be set function pointer)
+  ), nums333.end());
+  for (const int n : nums333)
+    std::cout << n << " ";
+  std::cout << std::endl;
+
+  /** \example: #4 */
+  cats111.emplace_back("cat1", 1);
+  cats111.emplace_back("cat2", 2);
+  cats111.emplace_back("cat3", 3);
+  cats111.emplace_back("cat4", 4);
+  cats111.erase(std::remove_if(cats111.begin(), cats111.end(), [](const Cat1 & cat){if(cat.age() % 2 == 0) {return true;} return false;}), cats111.end());
+  for (const Cat1 & cat : cats111)
+    cat.speak1();
+  std::cout << std::endl << std::endl;
 
   return 0;
 }

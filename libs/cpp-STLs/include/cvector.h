@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <algorithm>
 
 int vector_example();
 
@@ -20,6 +21,10 @@ public:
   void speak2() const
   {
     std::cout << "meow[" << mName << " " << mAge << "]  ";
+  }
+  int age() const
+  {
+    return mAge;
   }
 
 private:
