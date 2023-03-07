@@ -7,16 +7,21 @@ int vector_example()
     numsPtr[i] = i;
   delete numsPtr;
 
-  /* ----------------------------------------------------- */
 
+
+
+  /**
+   * \brief: std::vector - basic level
+   */
+
+  /** \example: #1 */
   std::vector<int> nums1(10);
   for (int i = 0; i < 10; i++)
     nums1[i] = i;
   std::cout << nums1.size() << std::endl;
   std::cout << std::endl;
 
-  /* ----------------------------------------------------- */
-
+  /** \example: #2 */
   std::vector<int> nums2{0, 1, 2, 3, 4};
   nums2.emplace_back(5);
   std::cout << nums2.size() << std::endl;
@@ -24,8 +29,7 @@ int vector_example()
   std::cout << nums2.size() << std::endl;
   std::cout << std::endl;
 
-  /* ----------------------------------------------------- */
-
+  /** \example: #3 */
   for (std::size_t i = 0; i < nums2.size(); i++)
   {
     std::cout << nums2[i] << " ";
@@ -42,11 +46,9 @@ int vector_example()
   {
     std::cout << itr << " ";
   }
-  std::cout << std::endl
-            << std::endl;
+  std::cout << std::endl << std::endl;
 
-  /* ----------------------------------------------------- */
-
+  /** \example: #4 */
   std::vector<Cat1> cats1;
   cats1.emplace_back(Cat1(1));
   cats1.emplace_back(Cat1(2));
@@ -59,19 +61,23 @@ int vector_example()
     // std::cout << cat << " "; // Wrong!
     cat.speak1();
   }
-  std::cout << std::endl
-            << std::endl;
+  std::cout << std::endl << std::endl;
 
-  /* ----------------------------------------------------- */
 
+
+
+  /**
+   * \brief: std::vector - intermediate level
+   */
+
+  /** \example: #1 */
   std::vector<int> nums3(10000, 1);
   nums3.emplace_back(2);           // O(1)
   nums3.pop_back();                // O(1)
   nums3.emplace(nums3.begin(), 3); // O(N), N=10000 (Need to move next for all elements) -> only at first or last position
   nums3.erase(nums3.begin());      // O(N), N=10000 (Need to move next for all elements) -> only at first or last position
 
-  /* ----------------------------------------------------- */
-
+  /** \example: #2 */
   std::vector<Cat1> cats2;
   cats2.emplace_back(Cat1{"cat0", 0});
   cats2.emplace_back(Cat1{"cat1", 0});
@@ -88,8 +94,14 @@ int vector_example()
   cats2.emplace_back(nabi);            // L-Value : copy
   cats2.emplace_back(std::move(nabi)); // R-Value : move
 
-  /* ----------------------------------------------------- */
 
+
+
+  /**
+   * \brief: std::vector - intermediate level (On memory issue)
+   */
+
+  /** \example: #1 */
   std::vector<int> nums4{1, 2, 3, 4, 5};
   std::cout << nums4.size() << " ";
   std::cout << nums4.capacity() << " " << std::endl;
@@ -110,8 +122,7 @@ int vector_example()
   std::cout << sizeof(nums4) << std::endl; // Total byte(24) = Pointer(8) + size info(8) + capacity info(8)
   std::cout << std::endl;
   
-  /* ----------------------------------------------------- */
-
+  /** \example: #2 */
   std::vector<Cat2> cats3;  
   cats3.emplace_back("Kitty3");
   cats3.emplace_back("Nabi3"); // will happen mem copy (not mem`ove) -> unefficient.. it is reason to declare "noexcept" keyword

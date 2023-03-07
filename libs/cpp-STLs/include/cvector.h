@@ -43,28 +43,28 @@ class Cat2
 public:
   explicit Cat2(int age) : mAge{age}
   {
-    std::cout << mAge << ": Cat2 constructor" << std::endl;
+    // std::cout << mAge << ": Cat2 constructor" << std::endl;
   }
   explicit Cat2(std::string name) : mName{std::move(name)}
   {
-    std::cout << mName << ": Cat2 constructor" << std::endl;
+    // std::cout << mName << ": Cat2 constructor" << std::endl;
   }
   explicit Cat2(std::string name, int age) : mName{std::move(name)}, mAge{age}
   {
-    std::cout << mName << mAge << ": Cat2 constructor" << std::endl;
+    // std::cout << mName << mAge << ": Cat2 constructor" << std::endl;
   }
   ~Cat2() noexcept
   {
-    std::cout << mName << ": ~Cat2()" << std::endl;
+    // std::cout << mName << ": ~Cat2()" << std::endl;
   }
 
   Cat2(const Cat2 &other) : mName(other.mName) // Copy assignment
   {
-    std::cout << mName << ": Cat2 Copy constructor" << std::endl;
+    // std::cout << mName << ": Cat2 Copy constructor" << std::endl;
   }
   Cat2(Cat2 &&other) noexcept : mName{std::move(other.mName)} // Move assignment (NO except!!)
   {
-    std::cout << mName << ": Cat2 Move constructor" << std::endl;
+    // std::cout << mName << ": Cat2 Move constructor" << std::endl;
   }
 
 private:
