@@ -9,6 +9,7 @@ target_link_libraries(program
     cpp-STLs 
     c-cpp-preprocessor 
     cpp-lamda
+    cpp-LRvalue
 )
 target_include_directories(program 
   PUBLIC 
@@ -16,4 +17,5 @@ target_include_directories(program
     ${CMAKE_SOURCE_DIR}/libs/cpp-STLs/include
     ${CMAKE_SOURCE_DIR}/libs/c-cpp-preprocessor/include
     ${CMAKE_SOURCE_DIR}/libs/cpp-lamda/include
+    ${CMAKE_SOURCE_DIR}/libs/cpp-LRvalue/include
 )

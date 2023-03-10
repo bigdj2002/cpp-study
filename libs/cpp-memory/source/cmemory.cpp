@@ -61,5 +61,10 @@ int memory_example()
   std::cout << sizeof(st4) << std::endl;
   std::cout << std::endl;
 
+  /**
+   * \brief: Stack memory
+   * \details: order: depent on stack call 
+   */
+
   return 0;
 }
