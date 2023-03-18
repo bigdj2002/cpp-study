@@ -3,6 +3,12 @@
 #include <string>
 #include <chrono>
 #include <algorithm>
+#include <cassert>
+#include <numeric>
+#include <functional>
+#include <array>
+#include <iomanip>
+#include <utility>
 
 int vector_example();
 
@@ -76,4 +82,10 @@ public:
 private:
   std::string mName;
   int mAge;
+};
+
+struct Employee
+{
+  int age;
+  std::string name; // Does not participate in comparisons
 };
