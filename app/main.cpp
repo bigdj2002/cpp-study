@@ -8,5 +8,6 @@ int main()
     // preprocessor_example();
     // lamda_example();
     // lrvalue_example();
-    string_example();
+    // string_example();
+    thread_example();
 }

@@ -119,6 +119,9 @@ int vector_example()
   cats2.emplace_back(std::move(nabi)); // R-Value : move
   std::cout << "------------------------------------- [↑ Example 2-2 ↑] -------------------------------------" << std::endl;
 
+
+
+
   /**
    * \brief: [3] std::vector - intermediate level (On memory issue)
    */
@@ -154,7 +157,6 @@ int vector_example()
   cats4.emplace_back("Kitty4");
   cats4.emplace_back("Nabi4");
   std::cout << "------------------------------------- [↑ Example 3-2 ↑] -------------------------------------" << std::endl;
-
 
 
 
