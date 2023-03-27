@@ -11,6 +11,7 @@ target_link_libraries(program
     cpp-lamda
     cpp-LRvalue
     cpp-thread
+    cpp-pointer
 )
 target_include_directories(program 
   PUBLIC 
@@ -20,4 +21,5 @@ target_include_directories(program
     ${CMAKE_SOURCE_DIR}/libs/cpp-lamda/include
     ${CMAKE_SOURCE_DIR}/libs/cpp-LRvalue/include
     ${CMAKE_SOURCE_DIR}/libs/cpp-thread/include
+    ${CMAKE_SOURCE_DIR}/libs/cpp-SmartPointer/include
 )
