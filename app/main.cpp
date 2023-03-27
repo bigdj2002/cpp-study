@@ -6,8 +6,8 @@ int main()
     // vector_example();
     // array_example();
     // preprocessor_example();
-    lamda_example();
-    // lrvalue_example();
+    // lamda_example();
+    lrvalue_example();
     // string_example();
     // thread_example();
 }

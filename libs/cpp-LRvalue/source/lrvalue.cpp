@@ -2,8 +2,10 @@
 
 void lrvalue_example()
 {
+  /* ---------------------------------------------------------------------------------------------------------- */
+
   /**
-   * \brief: Method to deliver arguements to function
+   * \brief: [1] Method to deliver arguements to function
    * \details: pass by value, pointer and reference
    * \note: Same assembly code (pass by pointer, reference)
    */
@@ -18,8 +20,7 @@ void lrvalue_example()
 
   a = 0;
   fooR(a); // pass by reference (More safer)
-  std::cout << a << std::endl
-            << std::endl;
+  std::cout << a << std::endl;
 
   std::vector<int> vec;
   int a1 = 1;
@@ -30,9 +31,12 @@ void lrvalue_example()
    * void push_back( T&& value ); (since C++11 ~ C++20) → R-value reference (&&)
    * constexpr void push_back( T&& value ); (C++20 ~
    */
+  std::cout << "------------------------------------- [↑ Example 1 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
 
   /**
-   * \brief: L-value? R-value?
+   * \brief: [2] L-value? R-value?
    * \details: std::move → L-value to R-value
    */
 
@@ -49,10 +53,12 @@ void lrvalue_example()
   b4 = "def";
   storeByRRef(std::move(b4)); // std::move(b4) : R-value, Copy operation in memory : #0
   storeByRRef("def");         // "abc" : R-value, Copy operation in memory : #0
-  std::cout << std::endl;
+  std::cout << "------------------------------------- [↑ Example 2 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
 
   /**
-   * \brief: std::move details
+   * \brief: [3] std::move details
    */
 
   std::string c1 = "c++ coding";
@@ -70,10 +76,12 @@ void lrvalue_example()
   kitty.setNameR2("nabi"); // #1 copy -> Not optimal!!
   kitty.setNameR3(s);      // #1 copy
   kitty.setNameR3("nabi"); // #0 copy -> Optimized (Copy elision optimization)
-  std::cout << std::endl;
+  std::cout << "------------------------------------- [↑ Example 3 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
 
   /**
-   * \brief: RVO (Return Value Optimization)
+   * \brief: [4] RVO (Return Value Optimization)
    * \details: One of the copy elision
    */
 
@@ -82,6 +90,9 @@ void lrvalue_example()
   std::string d2 = getString2(d1, true); // #0 copy (Due to the move constructor) ← No RVO intervention
   std::cout << d2 << std::endl;
   // Therefore, there is no need to be return value as std::move() type !!!
+  std::cout << "------------------------------------- [↑ Example 4 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
 }
 
 void fooV(int a)
