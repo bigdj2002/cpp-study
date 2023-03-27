@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <functional>
 
 class plus
 {
@@ -40,9 +41,22 @@ public:
     };
     lamda();
   }
+  int age()
+  {
+    return mAge;
+  }
 
 private:
   int mAge;
+};
+
+class FunctionObj
+{
+public:
+  void operator()(int i)
+  {
+    std::cout << "functionObj " << i << std::endl;
+  }
 };
 
 int lamda_example();
