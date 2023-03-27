@@ -6,6 +6,7 @@
 #include "lrvalue.h"
 #include "cstring.h"
 #include "cpointer.h"
+#include "cset.h"
 
 #include "cthread_1.h"
 #include "cthread_2.h"
