@@ -1,4 +1,5 @@
 #include <iostream>
 #include <thread>
+#include <vector>
 
-void thread_example();
+void thread_example_1();

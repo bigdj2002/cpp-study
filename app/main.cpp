@@ -7,7 +7,7 @@ int main()
     // array_example();
     // preprocessor_example();
     // lamda_example();
-    lrvalue_example();
+    // lrvalue_example();
     // string_example();
-    // thread_example();
+    thread_example_1();
 }
