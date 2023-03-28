@@ -122,7 +122,7 @@ void pointer_example()
       wPtr = sPtr;
       std::cout << "Ref count: " << sPtr.use_count() << std::endl;
 
-       if (const auto spt = wPtr.lock())
+      if (const auto spt = wPtr.lock())
       {
         std::cout << "Ref count: " << spt.use_count() << std::endl;
         spt->speak();
@@ -131,9 +131,9 @@ void pointer_example()
       {
         std::cout << "Pointing nothing" << std::endl;
       }
-  }
     }
-   
+  }
+
   std::cout << "------------------------------------- [↑ Example 4 ↑] -------------------------------------" << std::endl;
 
   /* ---------------------------------------------------------------------------------------------------------- */
