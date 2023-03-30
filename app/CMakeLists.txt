@@ -12,6 +12,7 @@ target_link_libraries(program
     cpp-LRvalue
     cpp-thread
     cpp-pointer
+    cpp-inheritance
 )
 target_include_directories(program 
   PUBLIC 
@@ -22,4 +23,5 @@ target_include_directories(program
     ${CMAKE_SOURCE_DIR}/libs/cpp-LRvalue/include
     ${CMAKE_SOURCE_DIR}/libs/cpp-thread/include
     ${CMAKE_SOURCE_DIR}/libs/cpp-SmartPointer/include
+    ${CMAKE_SOURCE_DIR}/libs/cpp-inheritance/include
 )
