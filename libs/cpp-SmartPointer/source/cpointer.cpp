@@ -93,9 +93,9 @@ void pointer_example()
     {
       std::shared_ptr<cat_pointer> pKitty = std::make_shared<cat_pointer>();
       std::shared_ptr<cat_pointer> pNabi = std::make_shared<cat_pointer>();
-      // pKitty->mFriend = pNabi;
+      // pKitty->mFriend1 = pNabi;
       // std::cout << "Ref count: " << pKitty.use_count() << std::endl;
-      // pNabi->mFriend = pKitty;
+      // pNabi->mFriend1 = pKitty;
       // std::cout << "Ref count: " << pNabi.use_count() << std::endl;
       // Life cycle is eternal (Ref count = 1) -> Cannot resolve to free memory
     }
@@ -131,6 +131,16 @@ void pointer_example()
       {
         std::cout << "Pointing nothing" << std::endl;
       }
+    }
+
+    if (const auto spt = wPtr.lock())
+    {
+      std::cout << "Ref count: " << spt.use_count() << std::endl;
+      spt->speak();
+    }
+    else
+    {
+      std::cout << "Pointing nothing" << std::endl;
     }
   }
 

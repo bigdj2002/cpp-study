@@ -11,14 +11,17 @@ class Animal
 class cat_pointer : public Animal
 {
 public:
-  cat_pointer(int age) : mAge{age}
+  cat_pointer(int age) : mAge{age}, mVar2{nullptr}
   {
     std::cout << "cat constructor" << std::endl;
   }
-  cat_pointer() : mAge{0}
+  cat_pointer() : cat_pointer(0) {}
+
+  explicit cat_pointer(short n) : mAge{0}, mVar2{std::make_unique<int>(n)}
   {
     std::cout << "cat constructor" << std::endl;
   }
+  
   ~cat_pointer() noexcept
   {
     std::cout << "cat destructor" << std::endl;
@@ -26,16 +29,20 @@ public:
 
   void speak()
   {
-    std::cout << "Meow~~" << std::endl;
+    std::cout << "Meow~~" << mAge << std::endl;
   }
 
 public:
-  std::shared_ptr<cat_pointer> mVar;
-  std::shared_ptr<cat_pointer> mFriend;
+  std::shared_ptr<cat_pointer> mVar1;
+  
+  std::shared_ptr<cat_pointer> mFriend1;
+  std::weak_ptr<cat_pointer> mFriend2;
 
 private:
   int mAge;
+  std::unique_ptr<int> mVar2;
 };
+
 
 class dog_pointer : public Animal
 {
