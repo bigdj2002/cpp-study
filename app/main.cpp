@@ -10,6 +10,8 @@ int main()
     // lamda_example();
     // lrvalue_example();
     // string_example();
-    thread_example_1();
     // pointer_example();
+
+    // thread_example();
+    thread_sync_example();
 }

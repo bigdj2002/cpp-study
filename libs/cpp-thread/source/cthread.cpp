@@ -1,4 +1,4 @@
-#include "cthread_1.h"
+#include "cthread.h"
 
 #define USE_JOIN_OR_DETACH 0 // 0: Join, 1: Detach
 
@@ -55,7 +55,7 @@ void threadCaller(std::thread &t)
   t.join(); // Thread is safe to join in the same scope
 }
 
-void thread_example_1()
+void thread_example()
 {
   /* ---------------------------------------------------------------------------------------------------------- */
 

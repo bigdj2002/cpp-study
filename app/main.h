@@ -8,5 +8,5 @@
 #include "cpointer.h"
 #include "cset.h"
 
-#include "cthread_1.h"
-#include "cthread_2.h"
+#include "cthread.h"
+#include "cthread_sync.h"
