@@ -1,10 +1,18 @@
 #include "cset.h"
 
-struct customFn
+struct customFn1
 {
   bool operator()(const int lhs, const int rhs) const
   {
     return lhs > rhs;
+  }
+};
+
+struct customFn2
+{
+  bool operator()(const int lhs, const int rhs) const
+  {
+    return (lhs % 10) < (rhs % 10);
   }
 };
 
@@ -29,7 +37,8 @@ void set_example()
    */
 
   std::set<int> nums1{1, 3, 2, 4, 5};           // Stord in the way (red-black tree → Binary search tree)
-  std::set<int, customFn> nums2{1, 3, 2, 4, 5}; // Customized rule
+  std::set<int, customFn1> nums2{1, 3, 2, 4, 5}; // Customized rule
+  std::set<int, customFn2> nums3{1, 3, 2, 4, 5}; // Customized rule
   nums1.emplace(3);
   nums1.emplace(6);
   nums1.emplace(-500);
@@ -44,12 +53,22 @@ void set_example()
     std::cout << num << " ";
   }
   std::cout << std::endl;
+
+  nums3.emplace(11);
+  nums3.emplace(21);
+  nums3.emplace(101);
+  for (const int num : nums3)
+  {
+    std::cout << num << " ";
+  }
+
+  std::cout << std::endl;
   std::cout << "------------------------------------- [↑ Example 1-1 ↑] -------------------------------------" << std::endl;
 
   std::set<cat_set> cats;
   cats.emplace(1, "nabi");
   cats.emplace(2, "kitty");
-  cats.emplace(1, "wal"); // Not inserted
+  cats.emplace(1, "wal");
 
   for (const auto &cat : cats)
   {
@@ -68,8 +87,8 @@ void set_example()
    *    - Search, insertion, and removal operations have logarithmic complexity.
    */
 
-  std::multiset<int> nums3{1, 3, 3, 3, 3, 2, 4, 5};
-  for (const int num : nums3)
+  std::multiset<int> nums4{1, 3, 3, 3, 3, 2, 4, 5};
+  for (const int num : nums4)
   {
     std::cout << num << " ";
   }

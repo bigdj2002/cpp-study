@@ -6,6 +6,7 @@ int main()
     // vector_example();
     // array_example();
     // set_example();
+    map_example();
     // preprocessor_example();
     // lamda_example();
     // lrvalue_example();
@@ -13,5 +14,5 @@ int main()
     // pointer_example();
 
     // thread_example();
-    thread_sync_example();
+    // thread_sync_example();
 }

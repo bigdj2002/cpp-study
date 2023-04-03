@@ -7,6 +7,7 @@
 #include "cstring.h"
 #include "cpointer.h"
 #include "cset.h"
+#include "cmap.h"
 
 #include "cthread.h"
 #include "cthread_sync.h"

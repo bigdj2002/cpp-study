@@ -15,7 +15,7 @@ public:
   {
     return mAge;
   }
-  const std::string &name() const // Former const: To fix object value, Latter const: To fix return value
+  const std::string &name() const // 1st const: To fix object value, 2nd const: To fix return value
   {
     return mName;
   }
