@@ -36,7 +36,7 @@ void set_example()
    *    - Sets are usually implemented as red-black trees.
    */
 
-  std::set<int> nums1{1, 3, 2, 4, 5};           // Stord in the way (red-black tree → Binary search tree)
+  std::set<int> nums1{1, 3, 2, 4, 5};            // Stord in the way (red-black tree → Binary search tree)
   std::set<int, customFn1> nums2{1, 3, 2, 4, 5}; // Customized rule
   std::set<int, customFn2> nums3{1, 3, 2, 4, 5}; // Customized rule
   nums1.emplace(3);
@@ -94,6 +94,45 @@ void set_example()
   }
   std::cout << std::endl;
   std::cout << "------------------------------------- [↑ Example 2 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [2] std::unordered_set
+   * \details:
+   *    - Unordered set is an associative container that contains a set of unique objects of type Key. 
+   *    - Search, insertion, and removal have average constant-time complexity.
+   *    - Internally, the elements are not sorted in any particular order, but organized into buckets. 
+   *    - Which bucket an element is placed into depends entirely on the hash of its value. 
+   *    - This allows fast access to individual elements, since once a hash is computed, it refers to the exact bucket the element is placed into.
+   *    - Container elements may not be modified (even by non const iterators) since modification could change an element's hash and corrupt the container.
+   */
+
+  std::unordered_set<std::string> uordSet;
+  uordSet.reserve(100); // To prevent re-hashing
+  std::cout << "load_factor: " << uordSet.load_factor() << std::endl;
+
+  uordSet.emplace("abc");
+  uordSet.emplace("def");
+  uordSet.emplace("ghi");
+  uordSet.emplace("jkl");
+
+  std::cout << "buchet count: " << uordSet.bucket_count() << std::endl;
+  for (const auto & str : uordSet)
+  {
+    std::cout << str << std::endl;
+    std::cout << str << " hash: " << std::hash<std::string>{}(str) << ", bucket: " << uordSet.bucket(str) << std::endl;
+  }
+  std::cout << "------------------------------------- [↑ Example 2-1 ↑] -------------------------------------" << std::endl;
+
+  uordSet.find("abc"); // O(1)
+  uordSet.insert("lmn"); // O(1)
+  uordSet.erase("def"); // O(1)
+  for (const auto &str : uordSet)
+  {
+    std::cout << str << std::endl;
+  }
+  std::cout << "------------------------------------- [↑ Example 2-2 ↑] -------------------------------------" << std::endl;
 
   /* ---------------------------------------------------------------------------------------------------------- */
 }
