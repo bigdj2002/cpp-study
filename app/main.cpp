@@ -6,7 +6,10 @@ int main()
     // vector_example();
     // array_example();
     // set_example();
-    map_example();
+    // map_example();
+    list_example();
+    // stack_example();
+    // queue_example();
     // preprocessor_example();
     // lamda_example();
     // lrvalue_example();
