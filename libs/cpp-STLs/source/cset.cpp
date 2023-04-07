@@ -24,6 +24,35 @@ bool operator<(const cat_set &lhs, const cat_set &rhs)
     return lhs.age() < rhs.age();
 }
 
+struct catHash
+{
+    std::size_t operator()(cat_set const& s) const noexcept
+    {
+        std::size_t h1 = std::hash<int>{}(s.age());
+        std::size_t h2 = std::hash<std::string>{}(s.name());
+        return h1 ^ h2; // or use boost::hash_combine
+    }
+};
+
+namespace std
+{
+    template <>
+    struct hash<cat_set>
+    {
+        std::size_t operator()(cat_set const &s) const noexcept
+        {
+          std::size_t h1 = std::hash<int>{}(s.age());
+          std::size_t h2 = std::hash<std::string>{}(s.name());
+          return h1 ^ h2 ; // or use boost::hash_combine
+        }
+    };
+}
+
+bool operator==(const cat_set &lhs, const cat_set &rhs) noexcept
+{
+    return (lhs.age() == rhs.age()) && (lhs.name() == rhs.name());
+}
+
 void set_example()
 {
   /* ---------------------------------------------------------------------------------------------------------- */
@@ -133,6 +162,35 @@ void set_example()
     std::cout << str << std::endl;
   }
   std::cout << "------------------------------------- [↑ Example 2-2 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [3] hash set / std::unordered_set
+   * \details:
+   */
+
+  cat_set kitto{1, "kitto"};
+  cat_set nabu{2, "nabu"};
+
+  std::unordered_set<cat_set, catHash> cats1;
+  std::unordered_multiset<cat_set> cats2;
+  cats1.emplace(kitto);
+  cats1.emplace(nabu);
+  cats1.emplace(1, "kitto");
+  cats2.emplace(kitto);
+  cats2.emplace(nabu);
+  cats2.emplace(1, "kitto");
+
+  for (const auto &cat : cats1)
+  {
+    cat.speak();
+  }
+   for (const auto &cat : cats2)
+  {
+    cat.speak();
+  }
+  std::cout << "------------------------------------- [↑ Example 3 ↑] -------------------------------------" << std::endl;
 
   /* ---------------------------------------------------------------------------------------------------------- */
 }

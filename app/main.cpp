@@ -5,8 +5,8 @@ int main()
     // memory_example();
     // vector_example();
     // array_example();
-    set_example();
-    // map_example();
+    // set_example();
+    map_example();
     // preprocessor_example();
     // lamda_example();
     // lrvalue_example();

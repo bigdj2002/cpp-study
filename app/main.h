@@ -8,6 +8,9 @@
 #include "cpointer.h"
 #include "cset.h"
 #include "cmap.h"
+#include "clist.h"
+#include "cstack.h"
+#include "cqueue.h"
 
 #include "cthread.h"
 #include "cthread_sync.h"

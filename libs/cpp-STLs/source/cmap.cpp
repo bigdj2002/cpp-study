@@ -44,4 +44,37 @@ void map_example()
   std::cout << "------------------------------------- [↑ Example 1-2 ↑] -------------------------------------" << std::endl;
 
   /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [4] hash map / std::unordered_map
+   * \details:
+   */
+
+  std::unordered_map<int, std::string> idNames1;
+  std::unordered_multimap<int, std::string> idNames2;
+
+  idNames1.emplace(1, "Dongjae");
+  idNames1.emplace(2, "kitty");
+  idNames1.emplace(3, "nabi");
+  idNames1.emplace(1, "bingo");
+  idNames1[1] = "bingo";
+  std::cout << idNames1[100];
+
+  idNames2.emplace(1, "Dongjae");
+  idNames2.emplace(2, "kitty");
+  idNames2.emplace(3, "nabi");
+  idNames2.emplace(1, "bingo");
+
+  for (const auto &idName : idNames1)
+  {
+    std::cout << idName.first << " " << idName.second << std::endl;
+  }
+  for (const auto &idName : idNames2)
+  {
+    std::cout << idName.first << " " << idName.second << std::endl;
+  }
+
+  std::cout << "------------------------------------- [↑ Example 2 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
 }
