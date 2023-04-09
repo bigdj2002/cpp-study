@@ -40,13 +40,13 @@ int main(int argc, char *argv[])
         case 16: thread_example(); break;
         case 17: thread_sync_example(); break;
         default:
-            std::cerr << "Invalid example name!" << std::endl;
+            std::cerr << "Invalid test name!" << std::endl;
             return -1;
         }
     }
     else
     {
-        std::cerr << "Invalid example name!" << std::endl;
+        std::cerr << "Invalid test name!" << std::endl;
         return -1;
     }
 }
