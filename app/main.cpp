@@ -3,11 +3,11 @@
 int main()
 {
     // memory_example();
-    // vector_example();
+    vector_example();
     // array_example();
     // set_example();
     // map_example();
-    list_example();
+    // list_example();
     // stack_example();
     // queue_example();
     // preprocessor_example();

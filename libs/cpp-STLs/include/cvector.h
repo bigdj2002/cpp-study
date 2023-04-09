@@ -10,7 +10,7 @@
 #include <iomanip>
 #include <utility>
 
-int vector_example();
+void vector_example();
 
 class Cat1
 {

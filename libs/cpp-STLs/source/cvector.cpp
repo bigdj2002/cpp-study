@@ -22,15 +22,14 @@ void printVec(const std::vector<int> &vec)
   std::cout << "}\n";
 }
 
-int vector_example()
+void vector_example()
 {
   int *numsPtr = new int[5];
   for (int i = 0; i < 5; i++)
     numsPtr[i] = i;
   delete numsPtr;
 
-
-
+  /* ---------------------------------------------------------------------------------------------------------- */
 
   /**
    * \brief: [1] std::vector - basic level
@@ -49,7 +48,7 @@ int vector_example()
   std::cout << nums2.size() << std::endl;
   nums2.pop_back();
   std::cout << nums2.size() << std::endl;
-  std::cout << "------------------------------------- [↑ Example 1-2 ↑] -------------------------------------" <<std::endl;
+  std::cout << "------------------------------------- [↑ Example 1-2 ↑] -------------------------------------" << std::endl;
 
   /** \example: #3 */
   for (std::size_t i = 0; i < nums2.size(); i++)
@@ -87,8 +86,7 @@ int vector_example()
   std::cout << std::endl;
   std::cout << "------------------------------------- [↑ Example 1-4 ↑] -------------------------------------" << std::endl;
 
-
-
+  /* ---------------------------------------------------------------------------------------------------------- */
 
   /**
    * \brief: [2] std::vector - intermediate level
@@ -119,8 +117,7 @@ int vector_example()
   cats2.emplace_back(std::move(nabi)); // R-Value : move
   std::cout << "------------------------------------- [↑ Example 2-2 ↑] -------------------------------------" << std::endl;
 
-
-
+  /* ---------------------------------------------------------------------------------------------------------- */
 
   /**
    * \brief: [3] std::vector - intermediate level (On memory issue)
@@ -135,7 +132,7 @@ int vector_example()
   std::cout << nums4.capacity() << " " << std::endl;
   for (std::size_t i = nums4.size(); i < 25; i++)
   {
-    nums4.emplace_back(i+1);
+    nums4.emplace_back(i + 1);
     std::cout << nums4[i] << " ";
   }
   std::cout << std::endl;
@@ -146,9 +143,9 @@ int vector_example()
 
   std::cout << sizeof(nums4) << std::endl; // Total byte(24) = Pointer(8) + size info(8) + capacity info(8)
   std::cout << "------------------------------------- [↑ Example 3-1 ↑] -------------------------------------" << std::endl;
-  
+
   /** \example: #2 */
-  std::vector<Cat2> cats3;  
+  std::vector<Cat2> cats3;
   cats3.emplace_back("Kitty3");
   cats3.emplace_back("Nabi3"); // will happen mem copy (not mem`ove) -> unefficient.. it is reason to declare "noexcept" keyword
 
@@ -158,8 +155,7 @@ int vector_example()
   cats4.emplace_back("Nabi4");
   std::cout << "------------------------------------- [↑ Example 3-2 ↑] -------------------------------------" << std::endl;
 
-
-
+  /* ---------------------------------------------------------------------------------------------------------- */
 
   /**
    * \brief: [4] std::vector - intermediate level (On for loop)
@@ -196,7 +192,7 @@ int vector_example()
   }
   auto end2 = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> time2 = end2 - start2;
-    std::cout << "Iterator-based loop: " << time2.count() << std::endl;
+  std::cout << "Iterator-based loop: " << time2.count() << std::endl;
 
   // Range-based (Safe and stable method)
   auto start3 = std::chrono::high_resolution_clock::now();
@@ -232,7 +228,7 @@ int vector_example()
   for (auto &num : nums33)
   {
     if (num == 0)
-      nums33.emplace_back(2); // Possible to change capacity. 
+      nums33.emplace_back(2); // Possible to change capacity.
   }
 
   for (const int n : nums11)
@@ -248,14 +244,13 @@ int vector_example()
   std::cout << std::endl;
   std::cout << "------------------------------------- [↑ Example 4-2 ↑] -------------------------------------" << std::endl;
 
-
-
+  /* ---------------------------------------------------------------------------------------------------------- */
 
   /**
    * \brief: [5] std::vector - intermediate level (On erase VS remove)
    * \details: std::remove, std::remove_if
    * Removes all elements satisfying specific criteria from the range [first, last) and returns a past-the-end iterator for the new end of the range.
-   * Removing is done by shifting (by means of copy assignment (until C++11) move assignment (since C++11)) the elements in the range in such a way that the elements that are not to be removed appear in the beginning of the range. 
+   * Removing is done by shifting (by means of copy assignment (until C++11) move assignment (since C++11)) the elements in the range in such a way that the elements that are not to be removed appear in the beginning of the range.
    */
 
   std::vector<int> nums111 = {0, 1, 0, 1, 0, 1, 0};
@@ -307,9 +302,11 @@ int vector_example()
   std::cout << "------------------------------------- [↑ Example 5-2b ↑] -------------------------------------" << std::endl;
 
   /** \example: #3 */
-  nums333.erase(std::remove_if(nums333.begin(), nums333.end(), 
-  [](int n){ if(n % 2 == 0) {return true;} return false; } // lamda function (can be set function pointer)
-  ), nums333.end());
+  nums333.erase(std::remove_if(nums333.begin(), nums333.end(),
+                               [](int n)
+                               { if(n % 2 == 0) {return true;} return false; } // lamda function (can be set function pointer)
+                               ),
+                nums333.end());
   for (const int n : nums333)
     std::cout << n << " ";
   std::cout << std::endl;
@@ -320,14 +317,16 @@ int vector_example()
   cats111.emplace_back("cat2", 2);
   cats111.emplace_back("cat3", 3);
   cats111.emplace_back("cat4", 4);
-  cats111.erase(std::remove_if(cats111.begin(), cats111.end(), [](const Cat1 & cat){if(cat.age() % 2 == 0) {return true;} return false;}), cats111.end());
-  for (const Cat1 & cat : cats111)
+  cats111.erase(std::remove_if(cats111.begin(), cats111.end(), [](const Cat1 &cat)
+                               {if(cat.age() % 2 == 0) {return true;} return false; }),
+                cats111.end());
+  for (const Cat1 &cat : cats111)
     cat.speak1();
-  std::cout << std::endl << std::endl;
+  std::cout << std::endl
+            << std::endl;
   std::cout << "------------------------------------- [↑ Example 5-4↑] -------------------------------------" << std::endl;
 
-
-
+  /* ---------------------------------------------------------------------------------------------------------- */
 
   /**
    * \brief: [6] std::vector - algorithm
@@ -335,9 +334,9 @@ int vector_example()
 
   /** \category: sorting */
   /** \example: #1a sort*/
-  std::vector<int> datas{1,3,6,8,123,23,78,16,23,75,86,93,32};
+  std::vector<int> datas{1, 3, 6, 8, 123, 23, 78, 16, 23, 75, 86, 93, 32};
   std::sort(datas.begin(), datas.end() /*, Callable object(ex. lamda function)*/);
-  for(auto data : datas)
+  for (auto data : datas)
     std::cout << data << " ";
   std::cout << std::endl;
   std::cout << "------------------------------------- [↑ Example 6-1a ↑] -------------------------------------" << std::endl;
@@ -544,6 +543,5 @@ int vector_example()
   }
   std::cout << "------------------------------------- [↑ Example 6-4b ↑] -------------------------------------" << std::endl;
 
-  std::cout << std::endl;
-  return 0;
+  /* ---------------------------------------------------------------------------------------------------------- */
 }
