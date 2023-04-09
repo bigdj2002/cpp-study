@@ -22,6 +22,14 @@ void printVec(const std::vector<int> &vec)
   std::cout << "}\n";
 }
 
+void print_mh(std::string_view text, std::vector<int> const &v)
+{
+  std::cout << text << ": ";
+  for (const auto &e : v)
+    std::cout << e << ' ';
+  std::cout << '\n';
+}
+
 void vector_example()
 {
   int *numsPtr = new int[5];
@@ -542,6 +550,52 @@ void vector_example()
                             std::reduce(PAR v.cbegin(), v.cend())}; });
   }
   std::cout << "------------------------------------- [↑ Example 6-4b ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [7] std::vector - std::make_heap
+   */
+
+  std::cout << "Max heap" << std::endl;
+
+  std::vector<int> v{1, 3, 5, 7, 9, 11};
+  print_mh("initially, v", v);
+
+  std::make_heap(v.begin(), v.end()); // O(n)
+  print_mh("after make_heap, v", v);
+
+  std::pop_heap(v.begin(), v.end()); // O(log n)
+  print_mh("after pop_heap, v", v);
+
+  auto top = v.back();
+  v.pop_back();
+  print_mh("former top element", {top});
+  print_mh("after removing the former top element, v", v);
+
+  v.emplace_back(10);
+  print_mh("after emplace_back, v", v);
+
+  std::push_heap(v.begin(), v.end()); // O(log n)
+  print_mh("after push_heap, v", v);
+
+  std::cout << std::endl << "Min heap" << std::endl;
+
+  std::vector<int> vec1{3, 2, 4, 1, 5, 9};
+  print_mh("initially, v1", vec1);
+
+  std::make_heap(vec1.begin(), vec1.end(), std::greater<>{});
+  print_mh("after make_heap, vec1", vec1);
+
+  std::pop_heap(vec1.begin(), vec1.end(), std::greater<>{});
+  print_mh("after pop_heap, vec1", vec1);
+
+  auto top1 = vec1.back();
+  vec1.pop_back();
+  print_mh("former top element", {top1});
+  print_mh("after removing the former top element, vec1", vec1);
+
+  std::cout << "------------------------------------- [↑ Example 7 ↑] -------------------------------------" << std::endl;
 
   /* ---------------------------------------------------------------------------------------------------------- */
 }

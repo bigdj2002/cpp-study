@@ -9,8 +9,11 @@
 #include <array>
 #include <iomanip>
 #include <utility>
+#include <string_view>
 
 void vector_example();
+
+void print_mh(std::string_view text, std::vector<int> const &v);
 
 class Cat1
 {

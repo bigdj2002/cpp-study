@@ -3,7 +3,7 @@
 int main()
 {
     // memory_example();
-    // vector_example();
+    vector_example();
     // array_example();
     // set_example();
     // map_example();
