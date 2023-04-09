@@ -12,6 +12,8 @@ void printStringView(const std::string_view s)
 
 void string_example()
 {
+  /* ---------------------------------------------------------------------------------------------------------- */
+
   /**
    * \brief: [1] char
    */
@@ -41,8 +43,7 @@ void string_example()
   std::cout << std::endl;
   std::cout << "------------------------------------- [↑ Example 1 ↑] -------------------------------------" << std::endl;
 
-
-
+  /* ---------------------------------------------------------------------------------------------------------- */
 
   /**
    * \brief: [2] std::string
@@ -62,8 +63,7 @@ void string_example()
   std::cout << std::endl;
   std::cout << "------------------------------------- [↑ Example 2 ↑] -------------------------------------" << std::endl;
 
-
-
+  /* ---------------------------------------------------------------------------------------------------------- */
 
   /**
    * \brief: [3] std::string_view
@@ -73,12 +73,14 @@ void string_example()
   [[maybe_unused]] const char *c3_2 = "nocopeReadOnly";
   [[maybe_unused]] std::string c3_3 = "nocopeHeap";
 
-  printString(c3_1); // Performance ↓, Due to the needs a allocation temporary memory in Heap
-  printString(c3_2); // Performance ↓, Due to the needs a allocation temporary memory in Heap
-  printString(c3_3); // No problem :)
+  printString(c3_1);     // Performance ↓, Due to the needs a allocation temporary memory in Heap
+  printString(c3_2);     // Performance ↓, Due to the needs a allocation temporary memory in Heap
+  printString(c3_3);     // No problem :)
   printStringView(c3_1); // Same performance! Resolved above mentioned problem :)
   printStringView(c3_2); // Same performance! Resolved above mentioned problem :)
   printStringView(c3_3);
   printStringView("nocopeLiteral"); // Similar to std::span !
   std::cout << "------------------------------------- [↑ Example 3 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
 }
