@@ -6,6 +6,7 @@
 #include "lrvalue.h"
 #include "cstring.h"
 #include "cpointer.h"
+#include "cinheritance.h"
 #include "cset.h"
 #include "cmap.h"
 #include "clist.h"
