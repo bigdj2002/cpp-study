@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
         {"vector", 1}, {"array", 2}, {"set", 3}, {"map", 4},
         {"list", 5}, {"stack", 6}, {"queue", 7}, {"string", 8},
         {"memory", 9}, {"preprocessor", 10}, {"pointer", 11}, {"lamda", 12},
-        {"lrvalue", 13}, {"pointer", 14}, {"inheritance", 15}, 
+        {"lrvalue", 13}, {"types", 14}, {"inheritance", 15}, 
         {"thread", 16}, {"thread_sync", 17}
     };
 
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
         case 11: pointer_example(); break;
         case 12: lamda_example(); break;
         case 13: lrvalue_example(); break;
-        case 14: pointer_example(); break;
+        case 14: types_example(); break;
         case 15: inherance_example(); break;
         case 16: thread_example(); break;
         case 17: thread_sync_example(); break;
