@@ -10,6 +10,7 @@
 #include "cstack.h"
 #include "cqueue.h"
 #include "cstring.h"
+#include "ctypes.h"
 
 /** \headerfile for preprocessor */
 #include "preprocessor.h"
