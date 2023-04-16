@@ -104,4 +104,62 @@ public:
   }
 };
 
-class
+class lion1 : public animal
+{
+public:
+  lion1() { std::cout << "lion constructor" << std::endl; }
+  virtual ~lion1() = default;
+  virtual void speak() { std::cout << "lion!" << std::endl; }
+  void speak2() override { std::cout << "lion2!" << std::endl; }
+
+private:
+  double lionData;
+};
+
+class tiger1 : public animal
+{
+public:
+  tiger1() { std::cout << "tiger constructor" << std::endl; }
+  virtual ~tiger1() = default;
+  virtual void speak() { std::cout << "tiger!" << std::endl; }
+  void speak2() override { std::cout << "tiger2!" << std::endl; }
+
+private:
+  double tigerData;
+};
+
+class lion2 : virtual public animal
+{
+public:
+  lion2() { std::cout << "lion constructor" << std::endl; }
+  virtual ~lion2() = default;
+  virtual void speak() { std::cout << "lion!" << std::endl; }
+  void speak2() override { std::cout << "lion2!" << std::endl; }
+
+private:
+  double lionData;
+};
+
+class tiger2 : virtual public animal
+{
+public:
+  tiger2() { std::cout << "tiger constructor" << std::endl; }
+  virtual ~tiger2() = default;
+  virtual void speak() { std::cout << "tiger!" << std::endl; }
+  void speak2() override { std::cout << "tiger2!" << std::endl; }
+
+private:
+  double tigerData;
+};
+
+class liger : public lion1, public tiger1
+{
+public:
+  liger() { std::cout << "liger constructor" << std::endl; }
+  virtual ~liger() = default;
+  void speak() override { std::cout << "liger!" << std::endl; }
+  void speak2() override { std::cout << "liger2!" << std::endl; }
+
+private:
+  double ligerData;
+};
