@@ -45,6 +45,20 @@ private:
   double height;
 };
 
+class animal2
+{
+public:
+  animal2() = default;
+  virtual ~animal2() = default;
+  virtual void speak()
+  {
+    std::cout << "animal2 [pointing VT]" << std::endl;
+  }
+
+private:
+  double animal2Data = 0.0f;
+};
+
 // class human : public animal
 class human
 {
@@ -84,11 +98,12 @@ private:
 class dogInh : public animal
 {
 public:
+  dogInh(double d) : dogData{d} {};
   dogInh()
   {
     std::cout << "dog constructor" << std::endl;
   }
-  ~dogInh() = default;
+  virtual ~dogInh() = default;
   // {
   //   std::cout << "dog destructor" << std::endl;
   // }
@@ -102,6 +117,19 @@ public:
   {
     std::cout << "bark2! [pointing VT]" << std::endl;
   }
+
+private:
+  double dogData;
+};
+
+class doginh2 : public animal2
+{
+public:
+  doginh2(double d) : dogData{d} {};
+  void speak() override { std::cout << "bark2!" << std::endl; }
+
+private:
+  double dogData;
 };
 
 class lion1 : public animal

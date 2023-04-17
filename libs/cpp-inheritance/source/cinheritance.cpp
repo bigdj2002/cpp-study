@@ -217,7 +217,14 @@ void inherance_example()
    * \brief: [7] object slicing
    */
 
-  
+  doginh2 jim{1.0};
+  // jim.speak();
+
+  animal2 & animalRef = jim;
+  animalRef.speak();
+
+  animal2 animalObj = jim; // Object slicing
+  animalObj.speak();  
 
   std::cout << "------------------------------------- [↑ Example 7 ↑] -------------------------------------" << std::endl;
 
