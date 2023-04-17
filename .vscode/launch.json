@@ -6,7 +6,7 @@
         "request": "launch",
         "program": "${workspaceFolder}/../build/bin/program",
         "args": [
-            "vector"
+            "types"
         ],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",

@@ -8,6 +8,7 @@ add_library(cpp-STLs
     ${CMAKE_CURRENT_SOURCE_DIR}/source/clist.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/source/cstack.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/source/cqueue.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/ctypes.cpp
 )
 
 target_include_directories(cpp-STLs PRIVATE include)
