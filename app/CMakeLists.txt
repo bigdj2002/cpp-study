@@ -13,6 +13,7 @@ target_link_libraries(program
     cpp-thread
     cpp-pointer
     cpp-inheritance
+    cpp-types
 )
 target_include_directories(program 
   PUBLIC 
@@ -24,4 +25,5 @@ target_include_directories(program
     ${CMAKE_SOURCE_DIR}/libs/cpp-thread/include
     ${CMAKE_SOURCE_DIR}/libs/cpp-SmartPointer/include
     ${CMAKE_SOURCE_DIR}/libs/cpp-inheritance/include
+    ${CMAKE_SOURCE_DIR}/libs/cpp-types/include
 )
