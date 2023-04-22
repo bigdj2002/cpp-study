@@ -1,6 +1,10 @@
 #include <iostream>
 #include <array>
 #include <random>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <istream>
 
 /** \note: Reason to use inheritance
  *    - Class relationship
@@ -11,10 +15,10 @@
 
 void inherance_example();
 
-class animal
+class animalInh
 {
 public:
-  animal()
+  animalInh()
   {
     std::cout << "animal constructor" << std::endl;
   }
@@ -24,7 +28,7 @@ public:
    *    - Because the destructor of leaf class is not called!
    */
   // ~animal()
-  virtual ~animal() = default;
+  virtual ~animalInh() = default;
   // {
   //   std::cout << "animal destructor" << std::endl;
   // }
@@ -45,19 +49,30 @@ private:
   double height;
 };
 
-class animal2
+class animalInh2
 {
 public:
-  animal2() = default;
-  virtual ~animal2() = default;
+  animalInh2() = default;
+  virtual ~animalInh2() = default;
+  animalInh2 operator=(animalInh2 other) = delete;
+
   virtual void speak()
   {
     std::cout << "animal2 [pointing VT]" << std::endl;
   }
 
-private:
+protected:
+  animalInh2(const animalInh2 &other) = default;
+
+public:
   double animal2Data = 0.0f;
 };
+
+inline bool operator==(const animalInh2 &lhs, const animalInh2 &rhs)
+{
+  std::cout << "animal comp" << std::endl;
+  return lhs.animal2Data == rhs.animal2Data;
+}
 
 // class human : public animal
 class human
@@ -69,7 +84,7 @@ public:
   }
 };
 
-class catInh : public animal
+class catInh : public animalInh
 {
 public:
   catInh()
@@ -95,7 +110,7 @@ private:
   double weight;
 };
 
-class dogInh : public animal
+class dogInh : public animalInh
 {
 public:
   dogInh(double d) : dogData{d} {};
@@ -122,17 +137,23 @@ private:
   double dogData;
 };
 
-class doginh2 : public animal2
+class doginh2 : public animalInh2
 {
 public:
   doginh2(double d) : dogData{d} {};
   void speak() override { std::cout << "bark2!" << std::endl; }
 
-private:
+public:
   double dogData;
 };
 
-class lion1 : public animal
+inline bool operator==(const doginh2 &lhs, const doginh2 &rhs)
+{
+  std::cout << "dog comp" << std::endl;
+  return lhs.dogData == rhs.dogData;
+}
+
+class lion1 : public animalInh
 {
 public:
   lion1() { std::cout << "lion constructor" << std::endl; }
@@ -144,7 +165,7 @@ private:
   double lionData;
 };
 
-class tiger1 : public animal
+class tiger1 : public animalInh
 {
 public:
   tiger1() { std::cout << "tiger constructor" << std::endl; }
@@ -156,7 +177,7 @@ private:
   double tigerData;
 };
 
-class lion2 : virtual public animal
+class lion2 : virtual public animalInh
 {
 public:
   lion2() { std::cout << "lion constructor" << std::endl; }
@@ -168,7 +189,7 @@ private:
   double lionData;
 };
 
-class tiger2 : virtual public animal
+class tiger2 : virtual public animalInh
 {
 public:
   tiger2() { std::cout << "tiger constructor" << std::endl; }
@@ -190,4 +211,68 @@ public:
 
 private:
   double ligerData;
+};
+
+class animalInh3
+{
+public:
+  virtual void speak()
+  {
+    std::cout << "animal" << std::endl;
+  }
+
+  virtual ~animalInh3() = default;
+
+private:
+  double animalData;
+};
+
+class catInh3 : public animalInh3
+{
+public:
+  void speak() override
+  {
+    std::cout << "meow" << std::endl;
+  }
+  void knead()
+  {
+    std::cout << "kkuk kkuk" << std::endl;
+  }
+
+private:
+  double catData;
+};
+
+class dogInh3 : public animalInh3
+{
+public:
+  void speak() override
+  {
+    std::cout << "bark" << std::endl;
+  }
+  void wagTail()
+  {
+    std::cout << "wagging" << std::endl;
+  }
+
+private:
+  double dogData;
+};
+
+class catInh4
+{
+public:
+  catInh4(std::string name, int age) : mName{std::move(name)}, mAge{age} {};
+  void print(std::ostream &os)
+  {
+    os << mName << " " << mAge << std::endl;
+  }
+  void setFromStream(std::istream &is)
+  {
+    is >> mName >> mAge;
+  }
+
+private:
+  std::string mName;
+  int mAge;
 };

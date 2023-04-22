@@ -6,7 +6,7 @@
         "request": "launch",
         "program": "${workspaceFolder}/../build/bin/program",
         "args": [
-            "types"
+            "inheritance"
         ],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",
