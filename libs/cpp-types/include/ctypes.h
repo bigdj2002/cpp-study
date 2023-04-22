@@ -1,4 +1,7 @@
 #include <iostream>
+#include <limits>
+#include <cmath>
+#include <iomanip>
 
 /** \remark: 1's complement
  *
@@ -23,6 +26,7 @@
  *        - Example) INF: (1) + {11111111} + [0000...000],
  *                   NAN:     + {11111111} + [Not a zero],
  *                   DENOM:   + {00000000} + [Not a zero]
+ *        - Googling IEEE 754 converter :)
  */ 
 
 void types_example();
