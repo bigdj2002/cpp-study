@@ -13,8 +13,8 @@ int main(int argc, char *argv[])
         {"vector", 1}, {"array", 2}, {"set", 3}, {"map", 4},
         {"list", 5}, {"stack", 6}, {"queue", 7}, {"string", 8},
         {"memory", 9}, {"preprocessor", 10}, {"pointer", 11}, {"lamda", 12},
-        {"lrvalue", 13}, {"types", 14}, {"inheritance", 15}, 
-        {"thread", 16}, {"thread_sync", 17}
+        {"lrvalue", 13}, {"types", 14}, {"inheritance", 15}, {"exception", 16},
+        {"template", 17}, {"thread", 18}, {"thread_sync", 19}
     };
 
     if (test_map.find(print) != test_map.end())
@@ -37,8 +37,10 @@ int main(int argc, char *argv[])
         case 13: lrvalue_example(); break;
         case 14: types_example(); break;
         case 15: inherance_example(); break;
-        case 16: thread_example(); break;
-        case 17: thread_sync_example(); break;
+        case 16: exception_example(); break;
+        case 17: template_example(); break;
+        case 18: thread_example(); break;
+        case 19: thread_sync_example(); break;
         default:
             std::cerr << "Invalid test name!" << std::endl;
             return -1;

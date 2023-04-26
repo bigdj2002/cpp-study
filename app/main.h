@@ -27,6 +27,12 @@
 /** \headerfile for class inheritance */
 #include "cinheritance.h"
 
+/** \headerfile for class exception */
+#include "cexception.h"
+
+/** \headerfile for class template */
+#include "ctemplate.h"
+
 /** \headerfile for thread */
 #include "cthread.h"
 #include "cthread_sync.h"

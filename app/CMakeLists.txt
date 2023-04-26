@@ -14,6 +14,8 @@ target_link_libraries(program
     cpp-pointer
     cpp-inheritance
     cpp-types
+    cpp-exception
+    cpp-template
 )
 target_include_directories(program 
   PUBLIC 
@@ -26,4 +28,6 @@ target_include_directories(program
     ${CMAKE_SOURCE_DIR}/libs/cpp-SmartPointer/include
     ${CMAKE_SOURCE_DIR}/libs/cpp-inheritance/include
     ${CMAKE_SOURCE_DIR}/libs/cpp-types/include
+    ${CMAKE_SOURCE_DIR}/libs/cpp-exception/include
+    ${CMAKE_SOURCE_DIR}/libs/cpp-template/include
 )
