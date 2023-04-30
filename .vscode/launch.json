@@ -6,7 +6,7 @@
         "request": "launch",
         "program": "${workspaceFolder}/../build/bin/program",
         "args": [
-            "exception"
+            "template"
         ],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",
