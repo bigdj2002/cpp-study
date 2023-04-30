@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 void exception_example();
 
@@ -13,4 +14,7 @@ public:
   {
     std::cout << "catEx destructor" << std::endl;
   }
+
+private:
+  int mAge = 10;
 };
