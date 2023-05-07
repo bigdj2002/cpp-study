@@ -173,6 +173,96 @@ void cat_fn(std::once_flag &flag, std::unique_ptr<catSync> cp)
                  { cp = std::make_unique<catSync>(); });
 }
 
+void static_fn()
+{
+  [[maybe_unused]] static int i = 0;
+  static catSync cat; // Can replace call_once
+  // lazy init
+}
+
+#define USE_INTERFACE1_WAIT 2
+void wait_fn(std::mutex &m, std::condition_variable &cv, bool &readyFlag)
+{
+  std::cout << "wait thread" << std::endl;
+  std::unique_lock<std::mutex> lck(m);
+  std::cout << "Blocked wait thread" << std::endl;
+
+#if USE_INTERFACE1_WAIT == 1
+  // Interface 1 of std::condition_variable::wait
+  while (!readyFlag)
+  {
+    // Be cautious of lost wake-up (The need for shared variable)
+    cv.wait(lck); // Releasing lock!
+    // mutex lock
+  }
+#else
+  // Interface 2 of std::condition_variable::wait
+  cv.wait(lck, [&readyFlag]()
+          { return readyFlag; });
+#endif
+
+  // Critical section from lck
+  std::cout << "wait thread re-run" << std::endl;
+
+  /** \attention: Spurious wakr-up
+   * To resolve this issue, it is recommended that developers always verify the condition that wakes up the thread.
+   * A common approach when using condition variables is to check the condition in a while loop.
+   * This way, even if a spurious wakeup occurs, the thread will return to the waiting state until the condition is met.
+   *
+   * \example:
+   *  std::mutex mtx;
+   *  std::condition_variable cv;
+   *  bool condition = false;
+   *
+   * // Thread function
+   * void thread_function() {
+   *     std::unique_lock<std::mutex> lock(mtx);
+   *     while (!condition) {
+   *         cv.wait(lock);
+   *     }
+   *     // Code to be executed when the condition is met
+   * }
+   */
+}
+
+#define USE_UNIQUE_LOCK_FOR_SHARED_VAR 1
+void signal_fn(std::mutex &m, std::condition_variable &cv, bool &readyFlag)
+{
+  std::cout << "signal thread" << std::endl;
+#if USE_UNIQUE_LOCK_FOR_SHARED_VAR == 0
+  {
+    std::lock_guard<std::mutex> lck(m);
+    readyFlag = true;
+  }
+
+  cv.notify_one(); // Also use cv.notify_all();
+#elif USE_UNIQUE_LOCK_FOR_SHARED_VAR == 1
+  std::unique_lock<std::mutex> lck(m);
+  readyFlag = true;
+  cv.notify_one(); // Also use cv.notify_all();
+#endif
+}
+
+void sem_fn(std::counting_semaphore<2> &sp)
+{
+  sp.acquire();
+  std::cout << "semaphore region" << std::endl;
+  sp.release();
+}
+
+void wait_sem_fn(std::counting_semaphore<10> &sp)
+{
+  std::cout << "waiting" << std::endl;
+  sp.acquire();
+  std::cout << "re-run" << std::endl;
+}
+
+void signal_sem_fn(std::counting_semaphore<10> &sp)
+{
+  std::cout << "signal" << std::endl;
+  sp.release();
+}
+
 void thread_sync_example()
 {
   /* ---------------------------------------------------------------------------------------------------------- */
@@ -345,6 +435,117 @@ void thread_sync_example()
   cp->speak();
 
   std::cout << "------------------------------------- [↑ Example 5-2 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [6] scoped static
+   *    - The method to initialize singleton
+   */
+
+  std::cout << "Process begin" << std::endl;
+  std::thread t6_a(static_fn);
+  std::thread t6_b(static_fn);
+
+  t6_a.join();
+  t6_b.join();
+  std::cout << "Process end" << std::endl;
+
+  std::cout << "------------------------------------- [↑ Example 6 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [7] std::condition_variable
+   *    - Purpose: Used to send a signal from one thread to another thread.
+   *    - The condition_variable class is a synchronization primitive used with a std::mutex to block one or more threads
+   *      until another thread both modifies a shared variable (the condition) and notifies the condition_variable.
+   *    - Figure:
+   *                  wait thread                  signal thread
+   *                       |                              |
+   *                       ↓                              ↓
+   *                      --- cv.wait() [step 1]         ---
+   *                      --- (blocked)                  --- shared var (modified) [step 2]
+   *                                ← --------(signal var)-------- ┘
+   *                                            [step 3]
+   *                      --- checking signaled var [step 4]
+   *                       |
+   *                       ↓
+   */
+
+  std::mutex m7;
+  std::condition_variable cv7;
+  bool readyFlag = false;
+
+  std::thread waitT(wait_fn, std::ref(m7), std::ref(cv7), std::ref(readyFlag));
+  std::thread signalT(signal_fn, std::ref(m7), std::ref(cv7), std::ref(readyFlag));
+
+  waitT.join();
+  signalT.join();
+
+  std::cout << "------------------------------------- [↑ Example 7 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [8] Producer/Consumer pattern of std::condition_variable
+   *    - Figure:
+   *          p-thread   p-thread               c-thread    c-thread
+   *             ↓          ↓                      ↓           ↓
+   *                              ━━━━━━━━━━━━━
+   *                              |   |   |   |   (Job queue)
+   *                              ━━━━━━━━━━━━━
+   *               Push job                          Pop job
+   *              (Make job)                       (Process job)
+   */
+
+  strStack strStack;
+  // strStack.addStr("Dongjae");
+  // std::cout << strStack.getStr() << std::endl;
+
+  std::thread t8_a([&]()
+                   { strStack.addStr("Dongjae"); });
+  std::thread t8_b([&]()
+                   { strStack.addStr("Yoonkyung"); });
+  std::thread t8_c([&]()
+                   { std::cout << strStack.getStr() << std::endl; });
+  std::thread t8_d([&]()
+                   { std::cout << strStack.getStr() << std::endl; });
+
+  t8_a.join();
+  t8_b.join();
+  t8_c.join();
+  t8_d.join();
+
+  std::cout << "------------------------------------- [↑ Example 8 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [9] std::semaphore
+   */
+
+  std::counting_semaphore<2> sp1(2);
+
+  std::thread t9_a(sem_fn, std::ref(sp1));
+  std::thread t9_b(sem_fn, std::ref(sp1));
+  std::thread t9_c(sem_fn, std::ref(sp1));
+
+  t9_a.join();
+  t9_b.join();
+  t9_c.join();
+
+  std::cout << "------------------------------------- [↑ Example 9-1 ↑] -------------------------------------" << std::endl;
+
+  std::counting_semaphore<10> sp2(0);
+
+  std::thread t9_d(wait_sem_fn, std::ref(sp2));
+  std::thread t9_e(signal_sem_fn, std::ref(sp2));
+
+  t9_d.join();
+  t9_e.join();
+
+  std::cout << "------------------------------------- [↑ Example 9-2 ↑] -------------------------------------" << std::endl;
 
   /* ---------------------------------------------------------------------------------------------------------- */
 }
