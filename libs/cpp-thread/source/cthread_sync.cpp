@@ -1,5 +1,8 @@
 #include "cthread_sync.h"
 
+std::barrier barrier{3, []()
+                     { std::cout << "Phase completion" << std::endl; }};
+
 void printThreadID()
 {
   std::cout << "threadID : " << std::this_thread::get_id() << std::endl;
@@ -261,6 +264,30 @@ void signal_sem_fn(std::counting_semaphore<10> &sp)
 {
   std::cout << "signal" << std::endl;
   sp.release();
+}
+
+#define USE_UNIFIED_LATCH 1
+void latch_fn(std::latch &latch)
+{
+  std::cout << "Decrease counter" << std::endl;
+#if USE_UNIFIED_LATCH
+  std::cout << "Wait" << std::endl;
+  latch.arrive_and_wait();
+#else
+  latch.count_down();
+  std::cout << "Wait" << std::endl;
+  latch.wait();
+#endif
+  std::cout << "Re-run" << std::endl;
+}
+
+void barrier_fn()
+{
+  std::cout << "1 " << std::flush;
+  barrier.arrive_and_wait();
+  std::cout << "2 " << std::flush;
+  barrier.arrive_and_wait();
+  std::cout << "3 " << std::flush;
 }
 
 void thread_sync_example()
@@ -546,6 +573,86 @@ void thread_sync_example()
   t9_e.join();
 
   std::cout << "------------------------------------- [↑ Example 9-2 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [10] std::latch
+   *    - The latch class is a downward counter of type std::ptrdiff_t which can be used to synchronize threads.
+   *    - The value of the counter is initialized on creation.
+   *    - Threads may block on the latch until the counter is decremented to zero.
+   *    - There is no possibility to increase or reset the counter, which makes the latch a single-use barrier.
+   *    - Concurrent invocations of the member functions of std::latch, except for the destructor, do not introduce data races.
+   *    - Unlike std::barrier, std::latch can be decremented by a participating thread more than once.
+   */
+
+  std::latch latch{3};
+  std::vector<std::thread> threads_latch;
+  for (int i = 0; i < 3; i++)
+  {
+    using namespace std::literals;
+    std::this_thread::sleep_for(500ms);
+    threads_latch.emplace_back(std::thread(latch_fn, std::ref(latch)));
+  }
+
+  for (auto &thread : threads_latch)
+  {
+    thread.join();
+  }
+
+  std::cout << "------------------------------------- [↑ Example 10 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [11] std::barrier
+   *    - The class template std::barrier provides a thread-coordination mechanism that blocks a group of threads of known size until all threads in that group have reached the barrier.
+   *    - Unlike std::latch, barriers are reusable: once a group of arriving threads are unblocked, the barrier can be reused.
+   *    - Unlike std::latch, barriers execute a possibly empty callable before unblocking threads.
+   *    - A barrier object's lifetime consists of one or more phases.
+   *    - Each phase defines a phase synchronization point where waiting threads block.
+   *    - Threads can arrive at the barrier, but defer waiting on the phase synchronization point by calling arrive.
+   *    - Such threads can later block on the phase synchronization point by calling wait.
+   */
+
+  std::vector<std::thread> threads_barrier;
+  for (int i = 0; i < 3; i++)
+  {
+    threads_barrier.emplace_back(barrier_fn);
+  }
+
+  for (auto &thread : threads_barrier)
+  {
+    thread.join();
+  }
+  std::cout << std::endl;
+
+  std::cout << "------------------------------------- [↑ Example 11 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: Counter flow: semaphore VS latch VS barrier
+   *    - Semaphore:
+   *          ↑   .
+   *          │ .   .   .
+   *          │       .   .  .
+   *          │                .
+   *          ┗━━━━━━━━━━━━━━━━━━━━━━━→
+   *    - latch:
+   *          ↑ .  .
+   *          │       .  .
+   *          │             . 
+   *          │                .
+   *          ┗━━━━━━━━━━━━━━━━━━━━━━━→
+   *    - barrier:
+   *          ↑   
+   *          │ .        . 
+   *          │    .        .
+   *          │       .         .
+   *          ┗━━━━━━━━━━━━━━━━━━━━━━━→
+   *
+   */
 
   /* ---------------------------------------------------------------------------------------------------------- */
 }

@@ -8,6 +8,9 @@
 #include <condition_variable>
 #include <string>
 #include <semaphore>
+#include <latch>
+#include <barrier>
+#include <functional>
 
 #define USE_LOCK_TYPE 2    // 0: Normal lock, 1: Lock_guard, 2: unique_lock in plus1()
 #define USE_SCLOPED_LOCK 1 // 0: Normal lock, 1: Scoped lock in ab(), ba()
