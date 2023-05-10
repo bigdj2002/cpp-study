@@ -67,6 +67,7 @@
         "any": "cpp",
         "shared_mutex": "cpp",
         "latch": "cpp",
-        "barrier": "cpp"
+        "barrier": "cpp",
+        "future": "cpp"
     }
 }

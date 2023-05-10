@@ -36,3 +36,4 @@
 /** \headerfile for thread */
 #include "cthread.h"
 #include "cthread_sync.h"
+#include "cthread_async.h"
