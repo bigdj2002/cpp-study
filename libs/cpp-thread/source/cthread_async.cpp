@@ -24,6 +24,11 @@ void prm_fn(std::promise<int> prm)
   }
 }
 
+void sfut_fn(std::shared_future<int> fut)
+{
+  std::cout << "Num: " << fut.get() << std::endl;
+}
+
 void thread_async_example()
 {
   /* ---------------------------------------------------------------------------------------------------------- */
@@ -46,11 +51,11 @@ void thread_async_example()
    * \details:
    */
 
-  std::promise<int> prms;
-  std::future<int> fut2 = prms.get_future();
+  std::promise<int> prms2;
+  std::future<int> fut2 = prms2.get_future();
 
-  // prms.set_value(42);
-  std::thread t2(prm_fn, std::move(prms));
+  // prms2.set_value(42);
+  std::thread t2(prm_fn, std::move(prms2));
   while (fut2.wait_for(0.5s) != std::future_status::ready)
   {
     std::cout << "Under process" << std::endl;
@@ -69,6 +74,26 @@ void thread_async_example()
   t2.join();
 
   std::cout << "------------------------------------- [↑ Example 2 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [3] std::shared_future
+   */
+
+  std::promise<int> prms3;
+  std::shared_future<int> fut3 = prms3.get_future();
+
+  std::vector<std::jthread> t3s;
+  for(int i=0; i<5; i++)
+  {
+    t3s.emplace_back(sfut_fn, fut3);
+  }
+
+  std::this_thread::sleep_for(1s);
+  prms3.set_value(42);
+
+  std::cout << "------------------------------------- [↑ Example 3 ↑] -------------------------------------" << std::endl;
 
   /* ---------------------------------------------------------------------------------------------------------- */
 }
