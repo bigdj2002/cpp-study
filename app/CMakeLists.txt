@@ -3,6 +3,7 @@ file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
 )
 
 add_executable(program ${SRC_FILES})
+target_link_libraries(program PRIVATE -latomic -pthread)
 target_link_libraries(program 
   PUBLIC 
     cpp-memory 

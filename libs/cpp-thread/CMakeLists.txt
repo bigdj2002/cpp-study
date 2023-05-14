@@ -3,6 +3,7 @@ add_library(cpp-thread
     ${CMAKE_CURRENT_SOURCE_DIR}/source/cthread.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/source/cthread_sync.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/source/cthread_async.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/cthread_atomic.cpp
 )
 
 target_include_directories(cpp-thread PRIVATE include)

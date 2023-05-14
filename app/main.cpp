@@ -14,7 +14,8 @@ int main(int argc, char *argv[])
         {"list", 5}, {"stack", 6}, {"queue", 7}, {"string", 8},
         {"memory", 9}, {"preprocessor", 10}, {"pointer", 11}, {"lamda", 12},
         {"lrvalue", 13}, {"types", 14}, {"inheritance", 15}, {"exception", 16},
-        {"template", 17}, {"thread", 18}, {"thread_sync", 19}, {"thread_async", 20}
+        {"template", 17}, {"thread", 18}, {"thread_sync", 19}, {"thread_async", 20},
+        {"thread_atomic", 21}
     };
 
     if (test_map.find(print) != test_map.end())
@@ -42,6 +43,7 @@ int main(int argc, char *argv[])
         case 18: thread_example(); break;
         case 19: thread_sync_example(); break;
         case 20: thread_async_example(); break;
+        case 21: thread_atomic_example(); break;
         default:
             std::cerr << "Invalid test name!" << std::endl;
             return -1;

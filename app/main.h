@@ -37,3 +37,4 @@
 #include "cthread.h"
 #include "cthread_sync.h"
 #include "cthread_async.h"
+#include "cthread_atomic.h"
