@@ -46,6 +46,62 @@ void pop_func(ThreadSafeStack<int, 10> &stack, std::size_t stack_size)
   }
 }
 
+void fn_atomic1(int &a, int &b, std::atomic<int> &n)
+{
+  a = 3;
+  b = 5;
+  n.store(1, std::memory_order_release);
+}
+
+void fn_atomic2(int &a, int &b, std::atomic<int> &n)
+{
+  while (n.load(std::memory_order_acquire) == 0)
+  {
+  }
+  std::cout << "a: " << a << std::endl;
+  std::cout << "b: " << b << std::endl;
+}
+
+void fn_atomic_cnt(std::atomic<int> &cnt)
+{
+  for (int i = 0; i < 1000; i++)
+  {
+    cnt.fetch_add(1, std::memory_order_relaxed);
+  }
+}
+
+void write_x(std::atomic<bool> &x)
+{
+  x.store(true, std::memory_order_acq_rel);
+}
+
+void write_y(std::atomic<bool> &y)
+{
+  y.store(true, std::memory_order_acq_rel);
+}
+
+void read_x_then_y(std::atomic<bool> &x, std::atomic<bool> &y, std::atomic<int> &z)
+{
+  while (!x.load(std::memory_order_acq_rel))
+  {
+  }
+  if (y.load(std::memory_order_acq_rel))
+  {
+    ++z;
+  }
+}
+
+void read_y_then_x(std::atomic<bool> &x, std::atomic<bool> &y, std::atomic<int> &z)
+{
+  while (!y.load(std::memory_order_acq_rel))
+  {
+  }
+  if (x.load(std::memory_order_acq_rel))
+  {
+    ++z;
+  }
+}
+
 void thread_atomic_example()
 {
   /* ---------------------------------------------------------------------------------------------------------- */
@@ -198,11 +254,60 @@ void thread_atomic_example()
   /**
    * \brief: [4] Memory order
    * \details:
+   *    - In ARM & x86 architecture, the cost increases in the following order
+   *      seq_cst > acq_rel > acquire = release > relaxed
    */
 
-  
+  int a4 = 0;
+  int b4 = 0;
+  std::atomic<int> n4{0};
+  std::thread t4_a(fn_atomic1, std::ref(a4), std::ref(b4), std::ref(n4));
+  std::thread t4_b(fn_atomic2, std::ref(a4), std::ref(b4), std::ref(n4));
+  t4_a.join();
+  t4_b.join();
 
-  std::cout << "------------------------------------- [↑ Example 4 ↑] -------------------------------------" << std::endl;
+  std::cout << "------------------------------------- [↑ Example 4-1 ↑] -------------------------------------" << std::endl;
+
+  /** \ */
+  std::atomic<int> cnt{0};
+  std::vector<std::thread> ts4;
+
+  for (int i = 0; i < 10; i++)
+  {
+    ts4.emplace_back(fn_atomic_cnt, std::ref(cnt));
+  }
+
+  for (auto &thread : ts4)
+  {
+    thread.join();
+  }
+
+  std::cout << "count: " << cnt << std::endl;
+
+  std::cout << "------------------------------------- [↑ Example 4-2 ↑] -------------------------------------" << std::endl;
+
+  std::atomic<bool> x = {false};
+  std::atomic<bool> y = {false};
+  std::atomic<int> z = {0};
+
+  std::thread t4_c(write_x, std::ref(x));
+  std::thread t4_d(write_y, std::ref(y));
+  std::thread t4_e(read_x_then_y, std::ref(x), std::ref(y), std::ref(z));
+  std::thread t4_f(read_y_then_x, std::ref(x), std::ref(y), std::ref(z));
+
+  t4_c.join();
+  t4_d.join();
+  t4_e.join();
+  t4_f.join();
+
+  std::cout << z << std::endl; // z = 0 or 1 or 2
+  /** 
+   * \note: 0 is impossible in std::memory_order_seq_cst
+  */
+
+  assert(z.load() != 0); // will never happen
+
+  std::cout << "------------------------------------- [↑ Example 4-3 ↑] -------------------------------------" << std::endl;
 
   /* ---------------------------------------------------------------------------------------------------------- */
 }
