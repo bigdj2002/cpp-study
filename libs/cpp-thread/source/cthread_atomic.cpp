@@ -102,6 +102,49 @@ void read_y_then_x(std::atomic<bool> &x, std::atomic<bool> &y, std::atomic<int> 
   }
 }
 
+void ProducerThread(LockFreeQueue<int, 10> &queue)
+{
+  for (int i = 0; i < 20; ++i)
+  {
+    if (queue.push(i))
+    {
+      std::cout << "Pushed: " << i << ", ";
+    }
+    else
+    {
+      std::cout << "Queue is full. Skipping: " << i << std::endl;
+    }
+
+    std::cout << "Current Queue: ";
+    queue.printQueue();
+    std::cout << std::endl;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+}
+
+void ConsumerThread(LockFreeQueue<int, 10> &queue)
+{
+  for (int i = 0; i < 20; ++i)
+  {
+    int value;
+    if (queue.pop(value))
+    {
+      std::cout << "Poped: " << value << ", ";
+    }
+    else
+    {
+      std::cout << "Queue is empty. Cannot pop." << std::endl;
+    }
+
+    std::cout << "Current Queue: ";
+    queue.printQueue();
+    std::cout << std::endl;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(20));
+  }
+}
+
 void thread_atomic_example()
 {
   /* ---------------------------------------------------------------------------------------------------------- */
@@ -301,13 +344,24 @@ void thread_atomic_example()
   t4_f.join();
 
   std::cout << z << std::endl; // z = 0 or 1 or 2
-  /** 
+  /**
    * \note: 0 is impossible in std::memory_order_seq_cst
-  */
+   */
 
   assert(z.load() != 0); // will never happen
 
   std::cout << "------------------------------------- [↑ Example 4-3 ↑] -------------------------------------" << std::endl;
+
+  constexpr std::size_t queue_size = 10;
+  LockFreeQueue<int, queue_size> queue;
+
+  std::thread producer(ProducerThread, std::ref(queue));
+  std::thread consumer(ConsumerThread, std::ref(queue));
+
+  producer.join();
+  consumer.join();
+
+  std::cout << "------------------------------------- [↑ Example 4-4 ↑] -------------------------------------" << std::endl;
 
   /* ---------------------------------------------------------------------------------------------------------- */
 }

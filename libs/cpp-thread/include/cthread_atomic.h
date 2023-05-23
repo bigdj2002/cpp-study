@@ -23,7 +23,7 @@ struct myStruct2
   int c[100];
 };
 
-template <typename T, std::size_t N>
+template <typename T, std::size_t Capacity>
 class LockFreeStack
 {
 public:
@@ -36,7 +36,7 @@ public:
     {
       old_idx = top_idx.load();
       new_idx = old_idx + 1;
-      if (new_idx >= static_cast<int>(N))
+      if (new_idx >= static_cast<int>(Capacity))
       {
         return false; // Stack overflow
       }
@@ -64,7 +64,7 @@ public:
 
   std::optional<T> get(std::size_t index)
   {
-    if (index >= N || index < 0)
+    if (index >= Capacity || index < 0)
     {
       return std::nullopt; // Invalid index
     }
@@ -81,6 +81,89 @@ public:
   }
 
 private:
-  std::array<T, N> data;
+  std::array<T, Capacity> data;
   std::atomic<int> top_idx;
+};
+
+template <typename T, std::size_t Capacity>
+class LockFreeQueue
+{
+public:
+  LockFreeQueue() : head(0), tail(0) {}
+
+  bool push(const T &value)
+  {
+    std::size_t currTail = tail.load();
+    std::size_t nextTail = (currTail + 1) % Capacity;
+
+    if (nextTail == head.load())
+      return false; // Queue is full
+
+    buffer[currTail] = value;
+    tail.store(nextTail);
+    return true;
+  }
+
+  bool pop(T &value)
+  {
+    std::size_t currHead = head.load();
+    if (currHead == tail.load())
+      return false; // Queue is empty
+
+    value = buffer[currHead];
+    head.store((currHead + 1) % Capacity);
+    return true;
+  }
+
+  std::optional<T> get(std::size_t index)
+  {
+    if (index >= Capacity)
+      return std::nullopt; // Invalid index
+
+    std::size_t currHead = head.load();
+    std::size_t currTail = tail.load();
+
+    if (currHead <= currTail)
+    {
+      if (index < currTail - currHead)
+        return buffer[currHead + index];
+    }
+    else
+    {
+      std::size_t wrappedIndex = currHead + index;
+      if (wrappedIndex < Capacity)
+        return buffer[wrappedIndex];
+      wrappedIndex -= Capacity;
+      if (wrappedIndex < currTail)
+        return buffer[wrappedIndex];
+    }
+
+    return std::nullopt; // Index out of range
+  }
+
+  void printQueue()
+  {
+    std::size_t currentHead = head.load(std::memory_order_relaxed);
+    std::size_t currentTail = tail.load(std::memory_order_relaxed);
+    while (currentHead != currentTail)
+    {
+      std::cout << buffer[currentHead] << " ";
+      currentHead = IncrementIndex(currentHead);
+    }
+  }
+
+  bool IsEmpty() const
+  {
+    return head.load() == tail.load();
+  }
+
+private:
+  std::array<T, Capacity> buffer;
+  std::atomic<std::size_t> head;
+  std::atomic<std::size_t> tail;
+
+  std::size_t IncrementIndex(std::size_t index) const
+  {
+    return (index + 1) % Capacity;
+  }
 };
