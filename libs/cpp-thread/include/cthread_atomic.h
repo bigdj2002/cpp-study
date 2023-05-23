@@ -24,10 +24,10 @@ struct myStruct2
 };
 
 template <typename T, std::size_t N>
-class ThreadSafeStack
+class LockFreeStack
 {
 public:
-  ThreadSafeStack() : top_idx(-1) {}
+  LockFreeStack() : top_idx(-1) {}
 
   bool push(const T &value)
   {

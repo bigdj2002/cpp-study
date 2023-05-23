@@ -6,7 +6,7 @@
         "request": "launch",
         "program": "${workspaceFolder}/../build/bin/program",
         "args": [
-            "thread_async"
+            "thread_atomic"
         ],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",

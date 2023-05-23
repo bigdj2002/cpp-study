@@ -17,7 +17,7 @@ void add_atomic(std::atomic<int> &num)
   }
 }
 
-void push_func(ThreadSafeStack<int, 10> &stack, std::size_t stack_size)
+void push_func(LockFreeStack<int, 10> &stack, std::size_t stack_size)
 {
   for (int i = 0; i < (int)stack_size / 2; ++i)
   {
@@ -28,7 +28,7 @@ void push_func(ThreadSafeStack<int, 10> &stack, std::size_t stack_size)
   }
 }
 
-void pop_func(ThreadSafeStack<int, 10> &stack, std::size_t stack_size)
+void pop_func(LockFreeStack<int, 10> &stack, std::size_t stack_size)
 {
   for (int i = 0; i < (int)stack_size / 2; ++i)
   {
@@ -233,7 +233,7 @@ void thread_atomic_example()
    */
 
   constexpr std::size_t stack_size = 10;
-  ThreadSafeStack<int, stack_size> stack;
+  LockFreeStack<int, stack_size> stack;
 
   // Spawn two threads to push and pop from the stack concurrently
   std::thread push_thread(push_func, std::ref(stack), stack_size);
