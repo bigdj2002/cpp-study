@@ -1,6 +1,6 @@
 #include "cpointer.h"
 
-void foo()
+void fooPtr()
 {
   std::cout << "Befor foo" << std::endl;
   std::unique_ptr<cat_pointer> catPtr = std::make_unique<cat_pointer>(3);
@@ -28,7 +28,7 @@ void pointer_example()
     std::cout << "Befor scope" << std::endl;
     {
       std::unique_ptr<cat_pointer> catPrt3 = std::make_unique<cat_pointer>(3);
-      foo();
+      fooPtr();
     }
     std::cout << "After scope" << std::endl;
   }
