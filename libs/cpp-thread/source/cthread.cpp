@@ -71,7 +71,7 @@ void fn4_task2(std::vector<int> &nums, std::size_t beginIdx, std::size_t endIdx,
   }
 }
 
-void fn4_task3(std::vector<int> &nums, std::size_t beginIdx, std::size_t endIdx, std::atomic<int> &sum)
+void fn4_task3(std::vector<int> &nums, std::size_t beginIdx, std::size_t endIdx, int &sum)
 {
   int localSum = 0;
   for (std::size_t idx = beginIdx; idx < endIdx; ++idx)
@@ -79,6 +79,14 @@ void fn4_task3(std::vector<int> &nums, std::size_t beginIdx, std::size_t endIdx,
     localSum += nums[idx];
   }
   sum = localSum;
+}
+
+void fn4_task4(std::vector<int> &nums, std::size_t beginIdx, std::size_t endIdx, int &sum)
+{
+  for (std::size_t idx = beginIdx; idx < endIdx; ++idx)
+  {
+    sum += nums[idx];
+  }
 }
 
 void thread_example()
@@ -260,12 +268,11 @@ void thread_example()
   std::cout << "------------------------------------- [↑ Example 4-3 ↑] -------------------------------------" << std::endl;
 
   std::vector<int> nums4_4(count4, 1);
-  std::atomic<int> sum4_4a{0};
-  std::atomic<int> sum4_4b{0};
+  int sums4[2];
   const auto start4_4 = std::chrono::steady_clock::now();
 
-  std::thread t4_5(fn4_task3, std::ref(nums4_4), 0, count4 / 2, std::ref(sum4_4a));
-  std::thread t4_6(fn4_task3, std::ref(nums4_4), count4 / 2, count4, std::ref(sum4_4b));
+  std::thread t4_5(fn4_task3, std::ref(nums4_4), 0, count4 / 2, std::ref(sums4[0]));
+  std::thread t4_6(fn4_task3, std::ref(nums4_4), count4 / 2, count4, std::ref(sums4[1]));
 
   t4_5.join();
   t4_6.join();
@@ -273,9 +280,52 @@ void thread_example()
   const auto end4_4 = std::chrono::steady_clock::now();
   const std::chrono::duration<double> duration4_4 = end4_4 - start4_4;
   std::cout << "Time(sec) : " << duration4_4.count() << std::endl;
-  std::cout << "Atomic, Sum = " << sum4_4a + sum4_4b << std::endl; // WHY SO FAST? → ALSO Due to the NOT false sharing!!
+  std::cout << "Atomic, Sum = " << sums4[0] + sums4[1] << std::endl; // WHY SO FAST? → ALSO Due to the NOT false sharing!!
 
   std::cout << "------------------------------------- [↑ Example 4-4 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [5] false sharing
+   *   <Concept>   │    <Description>
+   * ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   * False sharing │	Performance issue in multi-threaded systems where multiple threads access memory regions that share the same cache line
+   *    Cause      │  Occurs when different threads modify variables located in the same cache line
+   *    Impact     │  Leads to unnecessary cache invalidations and degraded performance
+   *  Mitigation   │  Add padding between data to separate them into different cache lines
+   *               │  Use atomic operations to ensure thread-safe access without cache line contention
+   *               │  Separate data structures to avoid sharing cache lines
+   *  Importance   │  Critical for optimizing performance in multi-threaded environments
+   *
+   *   <Solution>
+   *    - Padding:
+   *        Add sufficient padding between different data to ensure that each data has its own cache line.
+   *        This can be achieved by adding padding bytes to adjust the positioning of data.
+   *    - Use atomic operations:
+   *        Use atomic operations to prevent concurrent access between different data and maintain cache coherence.
+   *    - Separate data structures:
+   *        Rearrange different data into separate structures to ensure that each data operates on independent cache lines.
+   */
+
+  std::vector<int> nums5_1(count4, 1);
+  int sums5[17]; // For in different cache line (Over 64 byte)
+  sums5[0] = 0;
+  sums5[16] = 0;
+  const auto start5_1 = std::chrono::steady_clock::now();
+
+  std::thread t5_1(fn4_task4, std::ref(nums5_1), 0, count4 / 2, std::ref(sums5[0]));
+  std::thread t5_2(fn4_task4, std::ref(nums5_1), count4 / 2, count4, std::ref(sums5[16]));
+
+  t5_1.join();
+  t5_2.join();
+
+  const auto end5_1 = std::chrono::steady_clock::now();
+  const std::chrono::duration<double> duration5_1 = end5_1 - start5_1;
+  std::cout << "Time(sec) : " << duration5_1.count() << std::endl;
+  std::cout << "Padding to solve F.S., Sum = " << sums5[0] + sums5[16] << std::endl; // WHY SO FAST? → A
+
+  std::cout << "------------------------------------- [↑ Example 5 ↑] -------------------------------------" << std::endl;
 
   /* ---------------------------------------------------------------------------------------------------------- */
 }
