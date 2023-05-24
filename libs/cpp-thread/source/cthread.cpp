@@ -2,20 +2,19 @@
 
 #define USE_JOIN_OR_DETACH 0 // 0: Join, 1: Detach
 
-
 void fn1(int n)
 {
   std::cout << "fn1 : " << n << std::endl;
 }
 
-void fn2(int n, std::string & s) // string is quite expensive to copy → Reason to use reference for string
+void fn2(int n, std::string &s) // string is quite expensive to copy → Reason to use reference for string
 {
   std::cout << "fn2 : " << n << " " << s << std::endl;
 }
 
 void fn3(int &n)
 {
-  std::this_thread::sleep_for(std::chrono::seconds(1));
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
   std::cout << "fn1 : " << n << std::endl;
 }
 
@@ -26,7 +25,7 @@ int fn4()
 
 void fn5()
 {
-  // throw std::runtime_error("error"); // Compile ERROR! Cannot called as a result from thread exception. → Will call std::terminated 
+  // throw std::runtime_error("error"); // Compile ERROR! Cannot called as a result from thread exception. → Will call std::terminated
 }
 
 void fn6()
@@ -53,6 +52,33 @@ void threadCaller(std::thread &t)
   int num = 36;
   t = std::thread(fn3, std::ref(num));
   t.join(); // Thread is safe to join in the same scope
+}
+
+void fn4_task1(std::vector<int> &nums, std::size_t beginIdx, std::size_t endIdx, int &sum, std::mutex &mtx)
+{
+  const std::lock_guard<std::mutex> lck(mtx);
+  for (std::size_t idx = beginIdx; idx < endIdx; ++idx)
+  {
+    sum += nums[idx];
+  }
+}
+
+void fn4_task2(std::vector<int> &nums, std::size_t beginIdx, std::size_t endIdx, std::atomic<int> &sum)
+{
+  for (std::size_t idx = beginIdx; idx < endIdx; ++idx)
+  {
+    sum += nums[idx];
+  }
+}
+
+void fn4_task3(std::vector<int> &nums, std::size_t beginIdx, std::size_t endIdx, std::atomic<int> &sum)
+{
+  int localSum = 0;
+  for (std::size_t idx = beginIdx; idx < endIdx; ++idx)
+  {
+    localSum += nums[idx];
+  }
+  sum = localSum;
 }
 
 void thread_example()
@@ -115,7 +141,7 @@ void thread_example()
   std::cout << "------------------------------------- [↑ Example 1 ↑] -------------------------------------" << std::endl;
 
   /* ---------------------------------------------------------------------------------------------------------- */
-  
+
   /**
    * \brief: [2] std::thread argument
    */
@@ -137,9 +163,7 @@ void thread_example()
   /** \test: thread return  */
   int num2 = 0;
   std::thread t6([&num2]()
-  { 
-    num2 = fn4(); 
-  });
+                 { num2 = fn4(); });
   t6.join();
   std::cout << "RetVal : " << num2 << std::endl;
   std::cout << "------------------------------------- [↑ Example 2-3 ↑] -------------------------------------" << std::endl;
@@ -150,7 +174,7 @@ void thread_example()
     std::thread t(fn5);
     t.join();
   }
-  catch(...)
+  catch (...)
   {
     std::cout << "catched" << std::endl;
   }
@@ -167,11 +191,91 @@ void thread_example()
 
   [[maybe_unused]] int mainNum = 1;
   std::thread t7(fn6);
-  std::this_thread::sleep_for(1s);
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
   std::thread t8(fn6);
 
   t7.join();
   t8.join();
 
   std::cout << "------------------------------------- [↑ Example 3-1 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
+
+  /**
+   * \brief: [4] parallel reduce
+   */
+
+  constexpr std::size_t count4 = 100000000;
+  std::vector<int> nums4_1(count4, 1);
+
+  int sum4_1 = 0;
+  const auto start4_1 = std::chrono::steady_clock::now();
+
+  for (std::size_t idx = 0; idx < count4; ++idx)
+  {
+    sum4_1 += nums4_1[idx];
+  }
+
+  const auto end4_1 = std::chrono::steady_clock::now();
+  const std::chrono::duration<double> duration4_1 = end4_1 - start4_1;
+  std::cout << "Time(sec) : " << duration4_1.count() << std::endl;
+  std::cout << "Single for loop, Sum = " << sum4_1 << std::endl;
+
+  std::cout << "------------------------------------- [↑ Example 4-1 ↑] -------------------------------------" << std::endl;
+
+  std::vector<int> nums4_2(count4, 1);
+  int sum4_2 = 0;
+  const auto start4_2 = std::chrono::steady_clock::now();
+
+  std::mutex mtx;
+  std::thread t4_1(fn4_task1, std::ref(nums4_2), 0, count4 / 2, std::ref(sum4_2), std::ref(mtx));
+  std::thread t4_2(fn4_task1, std::ref(nums4_2), count4 / 2, count4, std::ref(sum4_2), std::ref(mtx));
+
+  t4_1.join();
+  t4_2.join();
+
+  const auto end4_2 = std::chrono::steady_clock::now();
+  const std::chrono::duration<double> duration4_2 = end4_2 - start4_2;
+  std::cout << "Time(sec) : " << duration4_2.count() << std::endl;
+  std::cout << "Thread, Sum = " << sum4_2 << std::endl;
+
+  std::cout << "------------------------------------- [↑ Example 4-2 ↑] -------------------------------------" << std::endl;
+
+  std::vector<int> nums4_3(count4, 1);
+  std::atomic<int> sum4_3a{0};
+  std::atomic<int> sum4_3b{0};
+  const auto start4_3 = std::chrono::steady_clock::now();
+
+  std::thread t4_3(fn4_task2, std::ref(nums4_3), 0, count4 / 2, std::ref(sum4_3a));
+  std::thread t4_4(fn4_task2, std::ref(nums4_3), count4 / 2, count4, std::ref(sum4_3b));
+
+  t4_3.join();
+  t4_4.join();
+
+  const auto end4_3 = std::chrono::steady_clock::now();
+  const std::chrono::duration<double> duration4_3 = end4_3 - start4_3;
+  std::cout << "Time(sec) : " << duration4_3.count() << std::endl;
+  std::cout << "Atomic, Sum = " << sum4_3a + sum4_3b << std::endl; // WHY SO SLOW? → Due to the false sharing!!
+
+  std::cout << "------------------------------------- [↑ Example 4-3 ↑] -------------------------------------" << std::endl;
+
+  std::vector<int> nums4_4(count4, 1);
+  std::atomic<int> sum4_4a{0};
+  std::atomic<int> sum4_4b{0};
+  const auto start4_4 = std::chrono::steady_clock::now();
+
+  std::thread t4_5(fn4_task3, std::ref(nums4_4), 0, count4 / 2, std::ref(sum4_4a));
+  std::thread t4_6(fn4_task3, std::ref(nums4_4), count4 / 2, count4, std::ref(sum4_4b));
+
+  t4_5.join();
+  t4_6.join();
+
+  const auto end4_4 = std::chrono::steady_clock::now();
+  const std::chrono::duration<double> duration4_4 = end4_4 - start4_4;
+  std::cout << "Time(sec) : " << duration4_4.count() << std::endl;
+  std::cout << "Atomic, Sum = " << sum4_4a + sum4_4b << std::endl; // WHY SO FAST? → ALSO Due to the NOT false sharing!!
+
+  std::cout << "------------------------------------- [↑ Example 4-4 ↑] -------------------------------------" << std::endl;
+
+  /* ---------------------------------------------------------------------------------------------------------- */
 }
