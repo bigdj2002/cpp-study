@@ -73,11 +73,11 @@ void deadlockFn(std::mutex &m, std::recursive_mutex &mr)
 
 void ab(std::mutex &ma, std::mutex &mb)
 {
-#if USE_SCLOPED_LOCK == 0
+#if USE_SCOPED_LOCK == 0
   const std::lock_guard<std::mutex> lcka(ma);
   std::this_thread::sleep_for(std::chrono::seconds(1));
   const std::lock_guard<std::mutex> lckb(mb);
-#elif USE_SCLOPED_LOCK == 1
+#elif USE_SCOPED_LOCK == 1
   /** \example: Since c++17 */
   // const std::scoped_lock lck(ma, mb);
   // std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -93,7 +93,7 @@ void ab(std::mutex &ma, std::mutex &mb)
 
 void ba(std::mutex &ma, std::mutex &mb)
 {
-#if USE_SCLOPED_LOCK == 0
+#if USE_SCOPED_LOCK == 0
   /** \example: Dead-lock with below */
   // const std::lock_guard<std::mutex> lckb(mb);
   // std::this_thread::sleep_for(std::chrono::microseconds(1));
@@ -103,7 +103,7 @@ void ba(std::mutex &ma, std::mutex &mb)
   const std::lock_guard<std::mutex> lcka(ma);
   std::this_thread::sleep_for(std::chrono::microseconds(1));
   const std::lock_guard<std::mutex> lckb(mb);
-#elif USE_SCLOPED_LOCK == 1
+#elif USE_SCOPED_LOCK == 1
   /** \example: Since c++17 */
   // const std::scoped_lock lck(mb, ma);
   // std::this_thread::sleep_for(std::chrono::seconds(1));
