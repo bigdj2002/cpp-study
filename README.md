@@ -1,2 +1,3 @@
-# cpp-tutorial
-* Let's study modern c++
+# cpp-study
+* Modern C++ (C++ 11, 14, 17, 20)
+* Leet coding tests
