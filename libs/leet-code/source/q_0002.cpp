@@ -38,5 +38,11 @@ void leet_test_0002()
     }
     printf("\n");
 
-    delete answer;
+    current = answer;
+    while (current != nullptr)
+    {
+        ListNode *temp = current;
+        current = current->next;
+        delete temp;
+    }
 }
