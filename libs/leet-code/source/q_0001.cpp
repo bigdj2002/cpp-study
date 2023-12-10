@@ -2,7 +2,7 @@
 
 void leet_test_0001()
 {
-    Solution sol;
+    Solution_0001 sol;
 
     std::vector<int> nums = {2, 7, 11, 15};
     int target = 9;

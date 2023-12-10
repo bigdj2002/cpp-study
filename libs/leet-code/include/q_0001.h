@@ -29,7 +29,7 @@
 
 // Follow-up: Can you come up with an algorithm that is less than O(n2) time complexity?
 
-class Solution
+class Solution_0001
 {
 public:
     vector<int> twoSum(vector<int> &nums, int target)
