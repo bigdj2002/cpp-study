@@ -8,7 +8,7 @@ void leet_test_0088()
     std::vector<int> nums1 = {1, 2, 3, 0, 0, 0};
 
     int n = 3;
-    std::vector<int> nums2 = {2, 5, 6};
+    std::vector<int> nums2 = {1, 5, 6};
 
     sol.merge(nums1, m, nums2, n);
 
