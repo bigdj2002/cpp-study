@@ -24,7 +24,7 @@
 // 1 <= nums.length <= 10^5
 // 0 <= nums[i] <= 10^5
 
-class Solution_945
+class Solution_0945
 {
 public:
     int minIncrementForUnique(vector<int> &nums)
