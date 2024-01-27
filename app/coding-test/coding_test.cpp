@@ -10,6 +10,7 @@ void execute_test(int test_number)
         case 773: leet_test_0773(); break;
         case 945: leet_test_0945(); break;
         case 1195: leet_test_1195(); break;
+        case 1302: leet_test_1302(); break;
         default: std::cout << "Test case not found.\n";
     }
 }

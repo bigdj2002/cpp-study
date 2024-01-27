@@ -5,6 +5,7 @@ add_library(leet STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/source/q_0773.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/source/q_0945.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/source/q_1195.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/q_1302.cpp
 )
 
 target_include_directories(leet PRIVATE include)

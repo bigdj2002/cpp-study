@@ -55,24 +55,6 @@
 // 0 <= board[i][j] <= 5
 // Each value board[i][j] is unique.
 
-struct node
-{
-    std::vector<std::vector<int>> b;
-    node *above;
-    node *bottom;
-    node *left;
-    node *right;
-
-    node(std::vector<std::vector<int>> &_b)
-    {
-        b = _b;
-        above = nullptr;
-        bottom = nullptr;
-        left = nullptr;
-        right = nullptr;
-    }
-};
-
 class Solution_0773
 {
 public:
